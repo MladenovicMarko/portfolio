@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>marko@portfolio</title>
+<meta name="description" content="Marko Mladenović — interne aplikacije za ugostiteljstvo, HR sistemi i web alati.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050D22; --panel:#0A1836; --panel2:#0D1F44; --line:#1B3163;
+  --text:#C9D9FF; --dim:#6E88BE;
+  --cyan:#4FE3EC; --amber:#FFC857; --green:#5BE49B; --red:#FF7B72;
+  --mono:'JetBrains Mono',ui-monospace,'Courier New',monospace;
+  --gut:clamp(16px,4vw,56px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:15px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:34px}
+a{color:var(--cyan);text-decoration:none}
+a:hover{background:var(--cyan);color:var(--bg)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gut)}
+.dim{color:var(--dim)}
+.cy{color:var(--cyan)}.am{color:var(--amber)}.gr{color:var(--green)}.rd{color:var(--red)}
+
+/* ---------- BANNER: CHARGE ---------- */
+.ascii-wrap{position:relative;display:block;width:100%}
+.ascii-wrap .ascii{transition:color .3s ease,text-shadow .3s ease}
+.ascii-wrap.charged .ascii{color:var(--red);
+  text-shadow:0 0 22px rgba(255,90,80,.6),2px 0 0 rgba(255,200,87,.55),-2px 0 0 rgba(79,227,236,.55)}
+.wave{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;
+  border:2px solid var(--red);border-radius:50%;transform:scale(0);pointer-events:none;
+  animation:wave .95s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes wave{to{transform:scale(16);opacity:0}}
+.chakra{font-size:12px;color:var(--dim);margin-top:10px;opacity:0;transform:translateY(-4px);
+  transition:opacity .3s,transform .3s}
+.ascii-wrap.charged+.chakra{opacity:1;transform:none}
+.chakra b{color:var(--red);font-weight:700}
+
+/* CRT layers */
+.scan{position:fixed;inset:0;z-index:90;pointer-events:none;
+  background:repeating-linear-gradient(180deg,rgba(255,255,255,.028) 0 1px,transparent 1px 3px)}
+.vig{position:fixed;inset:0;z-index:89;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.5) 100%)}
+
+/* top bar */
+header{position:sticky;top:0;z-index:70;background:var(--panel);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:46px;font-size:12.5px}
+.who{font-weight:700;white-space:nowrap}
+.who b{color:var(--green);font-weight:700}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{padding:4px 9px;color:var(--text);border:1px solid transparent;white-space:nowrap}
+nav a k{color:var(--amber);font-weight:700}
+nav a:hover{background:var(--cyan);color:var(--bg)}
+nav a:hover k{color:var(--bg)}
+
+/* hero */
+.hero{padding:clamp(26px,5vw,58px) 0 clamp(30px,6vw,60px)}
+pre.ascii{color:var(--cyan);font-size:clamp(6.4px,2.05vw,21px);line-height:1.06;font-weight:700;
+  white-space:pre;overflow:hidden;text-shadow:0 0 14px rgba(79,227,236,.35)}
+pre.ascii span{display:block;opacity:0;transform:translateX(-8px);
+  animation:slot .34s steps(6) forwards}
+@keyframes slot{to{opacity:1;transform:none}}
+.tag{margin-top:18px;font-size:clamp(13px,1.5vw,16px);max-width:66ch}
+.tag b{color:var(--amber);font-weight:500}
+
+/* terminal */
+.term{margin-top:26px;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel2),var(--panel));
+  box-shadow:0 0 0 1px rgba(79,227,236,.06),0 24px 60px -30px #000}
+.term-top{display:flex;align-items:center;gap:10px;padding:7px 12px;border-bottom:1px solid var(--line);
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);background:rgba(0,0,0,.25)}
+.leds{display:flex;gap:5px}
+.leds i{width:9px;height:9px;border:1px solid var(--line);border-radius:50%;display:block}
+.leds i:nth-child(1){background:var(--red)}
+.leds i:nth-child(2){background:var(--amber)}
+.leds i:nth-child(3){background:var(--green)}
+.log{padding:14px 14px 4px;min-height:190px;max-height:290px;overflow-y:auto;font-size:13.5px}
+.log p{white-space:pre-wrap;word-break:break-word}
+.log .ok::after{content:" [ ok ]";color:var(--green)}
+.cmdline{display:flex;align-items:center;gap:8px;padding:11px 14px;border-top:1px solid var(--line);background:rgba(0,0,0,.22)}
+.cmdline label{color:var(--green);font-weight:700;white-space:nowrap;font-size:13.5px}
+.cmdline input{flex:1;background:none;border:0;color:var(--text);font:inherit;font-size:13.5px;caret-color:var(--amber);min-width:0}
+.cmdline input:focus{outline:none}
+.blink{width:9px;height:16px;background:var(--amber);animation:blink 1.05s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chip{font:inherit;font-size:11.5px;padding:5px 10px;border:1px solid var(--line);background:none;
+  color:var(--dim);cursor:pointer}
+.chip:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* sections */
+section{padding:clamp(46px,7vw,84px) 0}
+.sec-title{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px;
+  font-size:clamp(19px,2.6vw,28px);font-weight:800;letter-spacing:-.01em}
+.sec-title em{font-style:normal;color:var(--dim);font-weight:400;font-size:12px}
+.rule{height:1px;background:var(--line);margin:14px 0 26px}
+.hint{color:var(--dim);font-size:13px;margin-bottom:22px;max-width:70ch}
+
+/* project listing */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.filter{font:inherit;font-size:11.5px;padding:6px 12px;border:1px solid var(--line);background:none;
+  color:var(--dim);cursor:pointer}
+.filter:hover{color:var(--text);border-color:var(--dim)}
+.filter[aria-pressed="true"]{background:var(--amber);color:var(--bg);border-color:var(--amber);font-weight:700}
+
+.ls{border:1px solid var(--line);background:var(--panel)}
+.ls-head{display:grid;grid-template-columns:26px minmax(0,1.4fr) minmax(0,1.7fr) 128px 108px;
+  gap:14px;padding:8px 14px;border-bottom:1px solid var(--line);
+  font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);background:rgba(0,0,0,.25)}
+.proj{border-bottom:1px solid var(--line)}
+.proj:last-child{border-bottom:0}
+.proj.hidden{display:none}
+.row{display:grid;grid-template-columns:26px minmax(0,1.4fr) minmax(0,1.7fr) 128px 108px;
+  gap:14px;align-items:center;width:100%;padding:13px 14px;background:none;border:0;color:inherit;
+  font:inherit;text-align:left;cursor:pointer;transition:background .15s}
+.proj:hover .row,.row[aria-expanded="true"]{background:var(--panel2)}
+.row[aria-expanded="true"]{box-shadow:inset 3px 0 0 var(--amber)}
+.tw{color:var(--amber);font-weight:700;transition:transform .25s}
+.row[aria-expanded="true"] .tw{transform:rotate(90deg)}
+.pname{font-weight:700;font-size:15px;letter-spacing:-.01em}
+.proj:hover .pname{color:var(--cyan)}
+.pdesc{color:var(--dim);font-size:13px;line-height:1.5}
+.ptech{font-size:11.5px;color:var(--text);display:flex;align-items:center;gap:7px}
+.dot{width:7px;height:7px;flex:none;background:var(--dim)}
+.dot.html{background:#E44B23}.dot.ts{background:#3178C6}.dot.js{background:#F1E05A}.dot.react{background:#61DAFB}
+.flag{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 8px;border:1px solid currentColor;justify-self:start;white-space:nowrap}
+.flag.live{color:var(--green)}.flag.gated{color:var(--amber)}.flag.repo{color:var(--dim)}
+.led{display:inline-block;width:6px;height:6px;background:var(--green);margin-right:6px;
+  box-shadow:0 0 0 0 rgba(91,228,155,.55);animation:pulse 2.2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(91,228,155,0)}100%{box-shadow:0 0 0 0 rgba(91,228,155,0)}}
+
+.panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s ease}
+.panel.open{grid-template-rows:1fr}
+.panel-in{overflow:hidden}
+.pad{padding:6px 14px 26px 40px;display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:clamp(18px,4vw,44px)}
+.pad h4{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:9px}
+.pad h4::before{content:"## ";color:var(--dim)}
+.pad p{color:var(--dim);font-size:13.5px;max-width:64ch}
+.pad p+h4{margin-top:20px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
+.feat{list-style:none;font-size:13px;color:var(--dim);line-height:1.6}
+.feat li{padding:4px 0 4px 16px;position:relative}
+.feat li::before{content:"-";position:absolute;left:0;color:var(--cyan)}
+.meta{list-style:none;font-size:12.5px;color:var(--dim);line-height:2}
+.meta b{color:var(--text);font-weight:500}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.btn{font:inherit;font-size:12px;font-weight:700;padding:9px 15px;border:1px solid var(--cyan);
+  color:var(--cyan);background:none;display:inline-block;cursor:pointer}
+.btn:hover{background:var(--cyan);color:var(--bg)}
+.btn.alt{border-color:var(--line);color:var(--dim)}
+.btn.alt:hover{background:var(--dim);color:var(--bg);border-color:var(--dim)}
+.warn{font-size:12px;color:var(--amber);margin-top:14px}
+.warn::before{content:"! ";font-weight:700}
+
+/* about + tree */
+.cols{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(20px,4vw,54px);align-items:start}
+.box{border:1px solid var(--line);background:var(--panel);padding:20px 22px}
+.box p+p{margin-top:14px}
+.box p{font-size:14px;color:var(--text)}
+.kv{list-style:none;font-size:13px}
+.kv li{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}
+.kv li:last-child{border-bottom:0}
+.kv span:first-child{color:var(--dim)}
+pre.tree{border:1px solid var(--line);background:var(--panel);padding:20px 22px;overflow-x:auto;
+  font-size:13px;line-height:2;color:var(--text)}
+pre.tree b{color:var(--cyan);font-weight:500}
+pre.tree i{color:var(--dim);font-style:normal}
+
+/* contact */
+.contact .box{max-width:640px}
+.mail{font-size:clamp(15px,2.4vw,24px);font-weight:700}
+.links{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px;font-size:13px;align-items:center}
+.linkbtn{font:inherit;font-size:13px;background:none;border:0;padding:0;color:var(--cyan);cursor:pointer}
+.linkbtn:hover{background:var(--cyan);color:var(--bg)}
+.linkbtn.shown{color:var(--text)}
+.linkbtn.shown:hover{background:none;color:var(--cyan)}
+.copied{color:var(--green);font-size:11.5px;margin-left:-10px;opacity:0;transition:opacity .25s}
+.copied.on{opacity:1}
+
+/* status bar */
+.status{position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--panel);
+  border-top:1px solid var(--line);font-size:11.5px}
+.status .wrap{display:flex;justify-content:space-between;gap:14px;height:34px;align-items:center;overflow:hidden;white-space:nowrap}
+.status k{color:var(--bg);background:var(--amber);padding:1px 5px;font-weight:700;margin-right:5px}
+.status .r{color:var(--dim)}
+
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+
+@media (max-width:900px){
+  .cols{grid-template-columns:1fr}
+  .ls-head{display:none}
+  .row{grid-template-columns:26px 1fr;gap:8px 12px;padding:15px 12px}
+  .pdesc,.ptech,.flag{grid-column:2}
+  .pad{grid-template-columns:1fr;padding-left:14px}
+  .duo{grid-template-columns:1fr;gap:6px}
+  .status .r{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+  pre.ascii span{opacity:1;transform:none}
+  .rv{opacity:1;transform:none}
+  .scan{display:none}
+}
+</style>
+</head>
+<body>
+<div class="scan" aria-hidden="true"></div>
+<div class="vig" aria-hidden="true"></div>
+
+<header>
+  <div class="wrap bar">
+    <span class="who">marko@portfolio:<span class="cy">~</span><b>$</b></span>
+    <nav>
+      <a href="#projekti"><k>1</k> projekti</a>
+      <a href="#omeni"><k>2</k> o-meni</a>
+      <a href="#stack"><k>3</k> stack</a>
+      <a href="#kontakt"><k>4</k> kontakt</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="ascii-wrap" id="asciiWrap"><pre class="ascii" id="ascii" aria-label="Marko"></pre></div>
+    <p class="chakra" aria-hidden="true">&gt; chakra: <b>100%</b> &mdash; sistem pod naponom</p>
+
+    <p class="tag">Web developer u Mariboru. Gradim <b>interne alate za ugostiteljstvo</b> — učenje jezika za nove konobare, praćenje recenzija, evidencija zaposlenih. Sve što vidiš ispod je u upotrebi, ne u fioci.</p>
+
+    <div class="term">
+      <div class="term-top">
+        <span class="leds" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>bash — marko@portfolio</span>
+      </div>
+      <div class="log" id="log" aria-live="polite"></div>
+      <form class="cmdline" id="form">
+        <label for="cmd">marko@portfolio:~$</label>
+        <input id="cmd" name="cmd" autocomplete="off" spellcheck="false" aria-label="Unesi komandu">
+        <span class="blink" aria-hidden="true"></span>
+      </form>
+    </div>
+
+    <div class="chips" id="chips">
+      <button class="chip" data-cmd="help">help</button>
+      <button class="chip" data-cmd="ls">ls</button>
+      <button class="chip" data-cmd="whoami">whoami</button>
+      <button class="chip" data-cmd="open myhero">open myhero</button>
+      <button class="chip" data-cmd="contact">contact</button>
+      <button class="chip" data-cmd="clear">clear</button>
+    </div>
+  </div>
+</section>
+
+<section id="projekti">
+  <div class="wrap">
+    <h2 class="sec-title rv">~/projekti <em>&mdash; 5 direktorijuma</em></h2>
+    <div class="rule"></div>
+    <p class="hint rv">Klikni red da otvoriš opis. Zeleno je uživo, žuto traži pristup, sivo je interno.</p>
+
+    <div class="filters rv">
+      <button class="filter" data-filter="all" aria-pressed="true">sve</button>
+      <button class="filter" data-filter="live" aria-pressed="false">uživo</button>
+      <button class="filter" data-filter="gated" aria-pressed="false">uz pristup</button>
+      <button class="filter" data-filter="repo" aria-pressed="false">interno</button>
+    </div>
+
+    <div class="ls rv">
+      <div class="ls-head"><span></span><span>naziv</span><span>opis</span><span>tehnologija</span><span>status</span></div>
+
+      <article class="proj" data-status="live">
+        <button class="row" aria-expanded="false" aria-controls="p0">
+          <span class="tw">&rsaquo;</span>
+          <span class="pname">MyHero</span>
+          <span class="pdesc">SaaS za personalne trenere — planovi, ishrana, napredak klijenata</span>
+          <span class="ptech"><i class="dot react"></i>React · Supabase</span>
+          <span class="flag live"><i class="led"></i>uživo</span>
+        </button>
+        <div class="panel" id="p0"><div class="panel-in"><div class="pad">
+          <div>
+            <h4>Problem</h4>
+            <p>Personalni trener vodi klijente kroz WhatsApp, Excel i PDF-ove — plan treninga u jednom fajlu, ishrana u drugom, napredak u trećem. Klijent ne zna šta radi danas, trener ne zna da li je odradio.</p>
+            <h4>Rešenje</h4>
+            <p>Jedna aplikacija sa dva odvojena pogleda: trener vodi sve klijente, klijent vidi samo svoje. Radi u pregledaču i instalira se na telefon kao PWA. Naplata ide kroz pretplatu — Starter, Pro i Studio, sa probnim periodom.</p>
+
+            <div class="duo">
+              <div>
+                <h4>Za trenera</h4>
+                <ul class="feat">
+                  <li>klijenti sa ciljem i nivoom, pozivnica na mejl</li>
+                  <li>plan treninga: dani, vežbe, serije / ponavljanja / kg / pauza, video demonstracije</li>
+                  <li>plan ishrane: obroci i sastojci, AI računa makronutrijente</li>
+                  <li>napredak: mere, grafikon težine, galerija fotografija</li>
+                  <li>biblioteka od ~148 vežbi + dodavanje svojih</li>
+                  <li>zajednički inbox sa svim klijentima i brojačem nepročitanih</li>
+                  <li>PDF plana i sopstveni logo studija na svemu</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Za klijenta</h4>
+                <ul class="feat">
+                  <li>svoj plan treninga sa videima, ishrana i raspored</li>
+                  <li>beleži težinu, mere i slike napretka</li>
+                  <li>označava trening kao odrađen</li>
+                  <li>plutajući chat sa trenerom</li>
+                  <li>skida svoj plan kao PDF</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="acts">
+              <a class="btn" href="https://my-hero-lake.vercel.app" target="_blank" rel="noopener">otvori aplikaciju &rarr;</a>
+            </div>
+          </div>
+          <div>
+            <h4>Info</h4>
+            <ul class="meta">
+              <li>uloga — <b>dizajn i razvoj</b></li>
+              <li>frontend — <b>React + Vite</b></li>
+              <li>backend — <b>Supabase</b></li>
+              <li>hosting — <b>Vercel (GitHub)</b></li>
+              <li>sigurnost — <b>RLS po nalogu</b></li>
+              <li>model — <b>B2B SaaS, pretplata</b></li>
+              <li>uređaji — <b>web + PWA</b></li>
+            </ul>
+          </div>
+        </div></div></div>
+      </article>
+
+      <article class="proj" data-status="live">
+        <button class="row" aria-expanded="false" aria-controls="p1">
+          <span class="tw">&rsaquo;</span>
+          <span class="pname">bascarsija-jezici</span>
+          <span class="pdesc">Učenje jezika za nove konobare u Sloveniji</span>
+          <span class="ptech"><i class="dot html"></i>HTML · Pages</span>
+          <span class="flag live"><i class="led"></i>uživo</span>
+        </button>
+        <div class="panel" id="p1"><div class="panel-in"><div class="pad">
+          <div>
+            <h4>Problem</h4>
+            <p>Nov konobar iz regiona dolazi u Sloveniju i prvog dana staje za šank bez rečnika struke. Opšti kursevi ne pokrivaju ono što mu stvarno treba — poručivanje, alergije, naplatu, reklamaciju gosta.</p>
+            <h4>Rešenje</h4>
+            <p>Web aplikacija sa lekcijama sklopljenim oko realnih situacija u lokalu. Otvara se u pregledaču na telefonu, bez instalacije, pa se uči između smena.</p>
+            <div class="acts">
+              <a class="btn" href="https://bascarsija-jezici.pages.dev/" target="_blank" rel="noopener">otvori aplikaciju &rarr;</a>
+            </div>
+          </div>
+          <div>
+            <h4>Info</h4>
+            <ul class="meta">
+              <li>uloga — <b>dizajn i razvoj</b></li>
+              <li>stack — <b>HTML, CSS, JS</b></li>
+              <li>hosting — <b>Cloudflare Pages</b></li>
+              <li>korisnici — <b>novi radnici</b></li>
+            </ul>
+          </div>
+        </div></div></div>
+      </article>
+
+      <article class="proj" data-status="gated">
+        <button class="row" aria-expanded="false" aria-controls="p2">
+          <span class="tw">&rsaquo;</span>
+          <span class="pname">bascarsija-recenzije</span>
+          <span class="pdesc">Recenzije svih restorana lanca na jednom mestu</span>
+          <span class="ptech"><i class="dot html"></i>HTML · Workers</span>
+          <span class="flag gated">uz pristup</span>
+        </button>
+        <div class="panel" id="p2"><div class="panel-in"><div class="pad">
+          <div>
+            <h4>Problem</h4>
+            <p>Recenzije su stizale razbacano po platformama i lokalima, pa niko nije imao pregled šta se ponavlja — ni menadžment, ni šefovi smene.</p>
+            <h4>Rešenje</h4>
+            <p>Jedno mesto sa svim recenzijama po restoranu, iza prijave jer su podaci poslovni. Radi na Cloudflare Workers infrastrukturi.</p>
+            <div class="acts">
+              <a class="btn" href="https://bascarsija-recenzije.bascarsija-recenzije.workers.dev/" target="_blank" rel="noopener">otvori aplikaciju &rarr;</a>
+              <a class="btn alt" href="mailto:tvoj@email.com?subject=Demo%20pristup%20recenzije">traži demo pristup</a>
+            </div>
+            <p class="warn">Sadrži poslovne podatke, pa je iza prijave. Demo nalog šaljem na zahtev.</p>
+          </div>
+          <div>
+            <h4>Info</h4>
+            <ul class="meta">
+              <li>uloga — <b>dizajn i razvoj</b></li>
+              <li>stack — <b>HTML, CSS, JS</b></li>
+              <li>hosting — <b>Cloudflare Workers</b></li>
+              <li>pristup — <b>login sa šifrom</b></li>
+            </ul>
+          </div>
+        </div></div></div>
+      </article>
+
+      <article class="proj" data-status="repo">
+        <button class="row" aria-expanded="false" aria-controls="p3">
+          <span class="tw">&rsaquo;</span>
+          <span class="pname">HR-APP</span>
+          <span class="pdesc">Evidencija zaposlenih: ugovori, sati, odsustva, plate</span>
+          <span class="ptech"><i class="dot ts"></i>TypeScript</span>
+          <span class="flag repo">interno</span>
+        </button>
+        <div class="panel" id="p3"><div class="panel-in"><div class="pad">
+          <div>
+            <h4>Problem</h4>
+            <p>Podaci o zaposlenima živeli su u tabelama i fasciklama, pa je svaka provera ugovora ili sati bila ručno traženje.</p>
+            <h4>Rešenje</h4>
+            <p>Centralizovan sistem za sve podatke o zaposlenima — lične informacije, ugovori, radno vreme, odsustva i plate, sa pregledima za menadžment.</p>
+            <div class="acts">
+              <a class="btn alt" href="mailto:tvoj@email.com?subject=HR-APP%20prikaz">traži prikaz</a>
+            </div>
+            <p class="warn">Interni sistem sa podacima o zaposlenima — nije javno dostupan.</p>
+          </div>
+          <div>
+            <h4>Info</h4>
+            <ul class="meta">
+              <li>uloga — <b>dizajn i razvoj</b></li>
+              <li>stack — <b>TypeScript</b></li>
+              <li>status — <b>u razvoju</b></li>
+              <li>korisnici — <b>menadžment, HR</b></li>
+            </ul>
+          </div>
+        </div></div></div>
+      </article>
+
+
+      <article class="proj" data-status="repo">
+        <button class="row" aria-expanded="false" aria-controls="p5">
+          <span class="tw">&rsaquo;</span>
+          <span class="pname">bascarsija-narudzbe</span>
+          <span class="pdesc">Unos i praćenje narudžbi tokom smene</span>
+          <span class="ptech"><i class="dot html"></i>HTML</span>
+          <span class="flag repo">interno</span>
+        </button>
+        <div class="panel" id="p5"><div class="panel-in"><div class="pad">
+          <div>
+            <h4>O projektu</h4>
+            <p>Alat kojim osoblje unosi narudžbe i prati njihov status tokom smene, umesto papira i dogovora u hodu.</p>
+            <div class="acts"><a class="btn alt" href="mailto:tvoj@email.com?subject=Narudzbe">pitaj za detalje</a></div>
+          </div>
+          <div><h4>Info</h4><ul class="meta">
+            <li>uloga — <b>dizajn i razvoj</b></li><li>stack — <b>HTML, CSS, JS</b></li><li>status — <b>interno</b></li>
+          </ul></div>
+        </div></div></div>
+      </article>
+
+
+
+    </div>
+  </div>
+</section>
+
+<section id="omeni">
+  <div class="wrap">
+    <h2 class="sec-title rv">cat whoami.txt <em>&mdash; 3 pasusa</em></h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <div class="box rv">
+        <p>Web developer sa fokusom na alate koji rešavaju konkretan operativni problem. Većina mojih projekata nastala je iz stvarne potrebe firme: neko je trošio sate na papir i tabele, pa smo to zamenili aplikacijom.</p>
+        <p>Radim celu putanju — od razgovora sa ljudima koji će alat koristiti, preko dizajna i implementacije, do postavljanja u produkciju i održavanja. Najviše mi je stalo do toga da interfejs bude razumljiv nekome ko nema vremena da uči kako se koristi.</p>
+        <p>Trenutno gradim skup internih aplikacija za ugostiteljski biznis i sistem za vođenje evidencije zaposlenih.</p>
+      </div>
+      <div class="box rv">
+        <ul class="kv">
+          <li><span>lokacija</span><span class="cy">Maribor, SI</span></li>
+          <li><span>fokus</span><span>interni alati</span></li>
+          <li><span>jezici</span><span>SR / SI / EN</span></li>
+          <li><span>dostupnost</span><span class="gr">otvoren za projekte</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="wrap">
+    <h2 class="sec-title rv">tree ~/stack <em>&mdash; 4 grane</em></h2>
+    <div class="rule"></div>
+<pre class="tree rv"><b>stack/</b>
+├── <b>frontend/</b>
+│   ├── html-css        <i># semantika, responsive</i>
+│   ├── javascript      <i># DOM, async, fetch</i>
+│   └── typescript      <i># tipovi, veći projekti</i>
+├── <b>aplikacije/</b>
+│   ├── interni-alati   <i># evidencije, izveštaji</i>
+│   ├── prijava         <i># pristup i uloge</i>
+│   └── forme           <i># validacija, unos</i>
+├── <b>deploy/</b>
+│   ├── cloudflare      <i># Pages, Workers</i>
+│   ├── git-github      <i># verzionisanje</i>
+│   └── domeni-dns      <i># povezivanje</i>
+└── <b>pristup/</b>
+    ├── razgovor        <i># šta korisniku stvarno treba</i>
+    ├── prototip        <i># brzo, pa iteracija</i>
+    └── odrzavanje      <i># posle lansiranja</i></pre>
+  </div>
+</section>
+
+<section id="kontakt" class="contact">
+  <div class="wrap">
+    <h2 class="sec-title rv">./kontakt.sh <em>&mdash; pokreni</em></h2>
+    <div class="rule"></div>
+    <div class="box rv">
+      <p class="dim" style="font-size:13px;margin-bottom:14px">&gt; imaš projekat? reci šta treba da radi — odgovaram u roku od dana.</p>
+      <p class="mail"><span class="gr">$</span> <a href="mailto:tvoj@email.com">tvoj@email.com</a></p>
+      <div class="links">
+        <a href="https://github.com/MladenovicMarko" target="_blank" rel="noopener">github</a>
+        <a href="https://www.linkedin.com/in/marko-mladenovic-ba54a3339/" target="_blank" rel="noopener">linkedin</a>
+        <button class="linkbtn" id="phone" data-tel="+386 69 667 830">telefon</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="status">
+  <div class="wrap">
+    <span><k>1-4</k>navigacija <k>/</k>fokus na terminal</span>
+    <span class="r" id="clock">marko mladenović — 2026</span>
+  </div>
+</div>
+
+<script>
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---- ASCII banner ---- */
+const art = [
+"███╗   ███╗ █████╗ ██████╗ ██╗  ██╗ ██████╗ ",
+"████╗ ████║██╔══██╗██╔══██╗██║ ██╔╝██╔═══██╗",
+"██╔████╔██║███████║██████╔╝█████╔╝ ██║   ██║",
+"██║╚██╔╝██║██╔══██║██╔══██╗██╔═██╗ ██║   ██║",
+"██║ ╚═╝ ██║██║  ██║██║  ██║██║  ██╗╚██████╔╝",
+"╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ "
+];
+const ascii = document.getElementById('ascii');
+ascii.innerHTML = art.map((l, i) =>
+  '<span style="animation-delay:' + (i * 0.07) + 's">' + l + '</span>').join('');
+
+/* ---- banner: uklopi tacno u sirinu ekrana ---- */
+function fitBanner(){
+  const cols = Math.max(...art.map(l => l.length));   // 44 znaka
+  const w = asciiWrap.clientWidth;
+  if (!w) return;
+  ascii.style.fontSize = Math.min(22, w / (cols * 0.6)) + 'px';
+}
+
+/* ---- banner: hover = scramble + udarni talas ---- */
+const asciiWrap = document.getElementById('asciiWrap');
+const GLYPHS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ01#$%&*<>/\\|';
+let charging = false;
+
+function charge(){
+  if (charging || reduce) return;
+  charging = true;
+  asciiWrap.classList.add('charged');
+
+  const wave = document.createElement('span');
+  wave.className = 'wave';
+  asciiWrap.appendChild(wave);
+  setTimeout(() => wave.remove(), 1000);
+
+  const lines = [...ascii.querySelectorAll('span')];
+  const original = lines.map(s => s.textContent);
+  let step = 0;
+
+  const iv = setInterval(() => {
+    step++;
+    const noise = 0.6 - step * 0.075;
+    lines.forEach((s, i) => {
+      let out = '';
+      for (const ch of original[i]) {
+        out += (ch !== ' ' && Math.random() < noise)
+          ? GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
+          : ch;
+      }
+      s.textContent = out;
+    });
+    if (step >= 8) {
+      clearInterval(iv);
+      lines.forEach((s, i) => s.textContent = original[i]);
+      setTimeout(() => { asciiWrap.classList.remove('charged'); charging = false; }, 850);
+    }
+  }, 55);
+}
+fitBanner();
+window.addEventListener('resize', fitBanner);
+document.fonts && document.fonts.ready.then(fitBanner);
+
+asciiWrap.addEventListener('pointerenter', charge);
+asciiWrap.addEventListener('click', charge);
+
+/* ---- terminal ---- */
+const log = document.getElementById('log');
+const form = document.getElementById('form');
+const cmd = document.getElementById('cmd');
+
+function print(html, cls){
+  const p = document.createElement('p');
+  if (cls) p.className = cls;
+  p.innerHTML = html;
+  log.appendChild(p);
+  log.scrollTop = log.scrollHeight;
+  return p;
+}
+
+const boot = [
+  '<span class="dim">$</span> whoami',
+  'marko mladenović — web developer, maribor',
+  '<span class="dim">$</span> ls ~/projekti | wc -l',
+  '5 <span class="dim">(3 u produkciji)</span>',
+  '<span class="dim">$</span> systemctl status portfolio',
+  '<span class="gr">●</span> aktivan — prima nove projekte',
+  '',
+  '<span class="dim">kucaj</span> <span class="am">help</span> <span class="dim">za listu komandi, ili samo skroluj.</span>'
+];
+
+let bi = 0;
+function bootLine(){
+  if (bi >= boot.length) return;
+  print(boot[bi++]);
+  setTimeout(bootLine, 240);
+}
+if (reduce) boot.forEach(l => print(l));
+else setTimeout(bootLine, 420);
+
+const targets = {
+  projekti: '#projekti', ls: '#projekti', projects: '#projekti',
+  omeni: '#omeni', whoami: '#omeni', about: '#omeni',
+  stack: '#stack', tree: '#stack',
+  kontakt: '#kontakt', contact: '#kontakt'
+};
+const apps = {
+  myhero: 'https://my-hero-lake.vercel.app',
+  jezici: 'https://bascarsija-jezici.pages.dev/',
+  recenzije: 'https://bascarsija-recenzije.bascarsija-recenzije.workers.dev/'
+};
+
+function run(input){
+  const raw = input.trim();
+  if (!raw) return;
+  print('<span class="gr">marko@portfolio:~$</span> ' + raw.replace(/</g, '&lt;'));
+  const [c, ...rest] = raw.toLowerCase().split(/\s+/);
+  const arg = rest.join(' ');
+
+  if (c === 'help') {
+    print('dostupne komande:');
+    print('  <span class="am">ls</span>            lista projekata');
+    print('  <span class="am">whoami</span>        ko sam i šta radim');
+    print('  <span class="am">stack</span>         tehnologije');
+    print('  <span class="am">contact</span>       kontakt podaci');
+    print('  <span class="am">open</span> &lt;app&gt;    otvori: myhero | jezici | recenzije');
+    print('  <span class="am">clear</span>         očisti ekran');
+    return;
+  }
+  if (c === 'clear') { log.innerHTML = ''; return; }
+  if (c === 'open') {
+    if (apps[arg]) { print('otvaram ' + arg + ' u novom tabu...', 'ok'); window.open(apps[arg], '_blank', 'noopener'); }
+    else print('<span class="rd">nema aplikacije:</span> ' + (arg || '(prazno)') + ' — probaj: myhero, jezici, recenzije');
+    return;
+  }
+  if (c === 'sudo') { print('<span class="rd">marko nije u sudoers fajlu. incident je prijavljen.</span>'); return; }
+  if (c === 'exit') { print('ne možeš da izađeš. skroluj dalje.'); return; }
+  if (targets[c]) {
+    print('idem na ' + c + '...', 'ok');
+    document.querySelector(targets[c]).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    return;
+  }
+  print('<span class="rd">komanda nije pronađena:</span> ' + c + ' — kucaj <span class="am">help</span>');
+}
+
+form.addEventListener('submit', e => { e.preventDefault(); run(cmd.value); cmd.value = ''; });
+document.getElementById('chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip');
+  if (!b) return;
+  run(b.dataset.cmd);
+  cmd.focus();
+});
+
+/* ---- telefon: otkrij + kopiraj ---- */
+const phone = document.getElementById('phone');
+const flash = document.createElement('span');
+flash.className = 'copied';
+flash.textContent = '[kopirano]';
+phone.after(flash);
+
+function copyText(t){
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(t);
+  return new Promise(res => {
+    const ta = document.createElement('textarea');
+    ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    ta.remove(); res();
+  });
+}
+
+phone.addEventListener('click', () => {
+  const tel = phone.dataset.tel;
+  if (!phone.classList.contains('shown')) {
+    phone.classList.add('shown');
+    phone.innerHTML = '<a href="tel:' + tel.replace(/\s/g, '') + '">' + tel + '</a>';
+  }
+  copyText(tel).then(() => {
+    flash.classList.add('on');
+    setTimeout(() => flash.classList.remove('on'), 1600);
+  });
+});
+
+/* ---- keyboard shortcuts ---- */
+const keys = { '1': '#projekti', '2': '#omeni', '3': '#stack', '4': '#kontakt' };
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (keys[e.key]) { e.preventDefault(); document.querySelector(keys[e.key]).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); }
+  if (e.key === '/') { e.preventDefault(); cmd.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' }); cmd.focus(); }
+});
+
+/* ---- accordions ---- */
+document.querySelectorAll('.row').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const panel = document.getElementById(btn.getAttribute('aria-controls'));
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    panel.classList.toggle('open', !open);
+  });
+});
+
+/* ---- filters ---- */
+const projects = document.querySelectorAll('.proj');
+document.querySelectorAll('.filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    btn.setAttribute('aria-pressed', 'true');
+    const f = btn.dataset.filter;
+    projects.forEach(p => p.classList.toggle('hidden', f !== 'all' && p.dataset.status !== f));
+  });
+});
+
+/* ---- reveal ---- */
+const rv = document.querySelectorAll('.rv');
+if (reduce) rv.forEach(el => el.classList.add('in'));
+else {
+  const io = new IntersectionObserver(en => {
+    en.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } });
+  }, { threshold: 0.1 });
+  rv.forEach(el => io.observe(el));
+}
+</script>
+</body>
+</html>
