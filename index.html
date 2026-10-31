@@ -2,752 +2,570 @@
 <html lang="sr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>marko@portfolio</title>
-<meta name="description" content="Marko Mladenović — interne aplikacije za ugostiteljstvo, HR sistemi i web alati.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marko Mladenović — Web developer</title>
+<meta name="description" content="Marko Mladenović, web developer iz Maribora. Sajtovi i poslovne aplikacije koje rade u produkciji.">
+<meta name="color-scheme" content="light">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#050D22; --panel:#0A1836; --panel2:#0D1F44; --line:#1B3163;
-  --text:#C9D9FF; --dim:#6E88BE;
-  --cyan:#4FE3EC; --amber:#FFC857; --green:#5BE49B; --red:#FF7B72;
-  --mono:'JetBrains Mono',ui-monospace,'Courier New',monospace;
-  --gut:clamp(16px,4vw,56px);
+  --paper:#FBFAF7; --card:#FFF; --sand:#F2EEE6;
+  --ink:#14171A; --body:#4A5056; --soft:#8A9099; --line:#E6E1D8;
+  --deep:#0C1311; --deep2:#111A17;
+  --green:#2A6350; --green-s:#EAF2EE; --dot:#3FA37F; --glow:#5FD0A4;
+  --serif:'Fraunces',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+  --pad:20px; --r:18px;
+  --ease:cubic-bezier(.22,1,.36,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:15px;line-height:1.65;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:34px}
-a{color:var(--cyan);text-decoration:none}
-a:hover{background:var(--cyan);color:var(--bg)}
-:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
-.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gut)}
-.dim{color:var(--dim)}
-.cy{color:var(--cyan)}.am{color:var(--amber)}.gr{color:var(--green)}.rd{color:var(--red)}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--body);font-family:var(--sans);
+  font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--dot);outline-offset:3px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
 
-/* ---------- BANNER: CHARGE ---------- */
-.ascii-wrap{position:relative;display:block;width:100%}
-.ascii-wrap .ascii{transition:color .3s ease,text-shadow .3s ease}
-.ascii-wrap.charged .ascii{color:var(--red);
-  text-shadow:0 0 22px rgba(255,90,80,.6),2px 0 0 rgba(255,200,87,.55),-2px 0 0 rgba(79,227,236,.55)}
-.wave{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;
-  border:2px solid var(--red);border-radius:50%;transform:scale(0);pointer-events:none;
-  animation:wave .95s cubic-bezier(.2,.7,.3,1) forwards}
-@keyframes wave{to{transform:scale(16);opacity:0}}
-.chakra{font-size:12px;color:var(--dim);margin-top:10px;opacity:0;transform:translateY(-4px);
-  transition:opacity .3s,transform .3s}
-.ascii-wrap.charged+.chakra{opacity:1;transform:none}
-.chakra b{color:var(--red);font-weight:700}
+.wrap{width:100%;max-width:1120px;margin:0 auto;padding-inline:var(--pad)}
+.narrow{max-width:740px}
+h1,h2,h3{font-family:var(--serif);color:var(--ink);font-weight:600;line-height:1.1;
+  letter-spacing:-.02em;font-variation-settings:'opsz' 120}
+h1{font-size:clamp(36px,8.8vw,76px);line-height:1.02}
+h2{font-size:clamp(28px,6.2vw,46px)}
+h3{font-size:20px;line-height:1.25}
+.eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.lede{font-size:clamp(16px,4.2vw,19px);max-width:56ch}
+.small{font-size:14px;color:var(--soft)}
 
-/* CRT layers */
-.scan{position:fixed;inset:0;z-index:90;pointer-events:none;
-  background:repeating-linear-gradient(180deg,rgba(255,255,255,.028) 0 1px,transparent 1px 3px)}
-.vig{position:fixed;inset:0;z-index:89;pointer-events:none;
-  background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.5) 100%)}
+/* ===== progress ===== */
+.prog{position:fixed;top:0;left:0;height:2px;width:0;background:var(--dot);z-index:90}
 
-/* top bar */
-header{position:sticky;top:0;z-index:70;background:var(--panel);border-bottom:1px solid var(--line)}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:46px;font-size:12.5px}
-.who{font-weight:700;white-space:nowrap}
-.who b{color:var(--green);font-weight:700}
-nav{display:flex;gap:4px;flex-wrap:wrap}
-nav a{padding:4px 9px;color:var(--text);border:1px solid transparent;white-space:nowrap}
-nav a k{color:var(--amber);font-weight:700}
-nav a:hover{background:var(--cyan);color:var(--bg)}
-nav a:hover k{color:var(--bg)}
+/* ===== header ===== */
+header{position:fixed;top:0;left:0;right:0;z-index:80;transition:background .4s,border-color .4s;
+  border-bottom:1px solid transparent;padding-top:env(safe-area-inset-top,0px)}
+header.solid{background:rgba(251,250,247,.9);backdrop-filter:blur(12px);border-bottom-color:var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.brand{font-family:var(--serif);font-weight:600;font-size:17px;color:#fff;transition:color .4s}
+header.solid .brand{color:var(--ink)}
+.bar nav{display:none}
+.cta{font-size:14px;font-weight:500;padding:9px 17px;border-radius:999px;white-space:nowrap;
+  border:1px solid rgba(255,255,255,.3);color:#fff;transition:.3s}
+header.solid .cta{border-color:var(--line);color:var(--ink);background:var(--card)}
 
-/* hero */
-.hero{padding:clamp(26px,5vw,58px) 0 clamp(30px,6vw,60px)}
-pre.ascii{color:var(--cyan);font-size:clamp(6.4px,2.05vw,21px);line-height:1.06;font-weight:700;
-  white-space:pre;overflow:hidden;text-shadow:0 0 14px rgba(79,227,236,.35)}
-pre.ascii span{display:block;opacity:0;transform:translateX(-8px);
-  animation:slot .34s steps(6) forwards}
-@keyframes slot{to{opacity:1;transform:none}}
-.tag{margin-top:18px;font-size:clamp(13px,1.5vw,16px);max-width:66ch}
-.tag b{color:var(--amber);font-weight:500}
+/* ===== buttons ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:52px;
+  padding:0 26px;border-radius:999px;font-size:15px;font-weight:500;border:1px solid transparent;
+  transition:background .25s,border-color .25s,color .25s,transform .35s var(--ease);will-change:transform}
+.btn.primary{background:var(--glow);color:#06120D}
+.btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.25)}
+.btn.dark{background:var(--ink);color:#fff}
+.btn:active{transform:scale(.97)}
+@media (hover:hover){.btn.primary:hover{background:#7FE0BC}.btn.ghost:hover{border-color:#fff}}
 
-/* terminal */
-.term{margin-top:26px;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel2),var(--panel));
-  box-shadow:0 0 0 1px rgba(79,227,236,.06),0 24px 60px -30px #000}
-.term-top{display:flex;align-items:center;gap:10px;padding:7px 12px;border-bottom:1px solid var(--line);
-  font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);background:rgba(0,0,0,.25)}
-.leds{display:flex;gap:5px}
-.leds i{width:9px;height:9px;border:1px solid var(--line);border-radius:50%;display:block}
-.leds i:nth-child(1){background:var(--red)}
-.leds i:nth-child(2){background:var(--amber)}
-.leds i:nth-child(3){background:var(--green)}
-.log{padding:14px 14px 4px;min-height:190px;max-height:290px;overflow-y:auto;font-size:13.5px}
-.log p{white-space:pre-wrap;word-break:break-word}
-.log .ok::after{content:" [ ok ]";color:var(--green)}
-.cmdline{display:flex;align-items:center;gap:8px;padding:11px 14px;border-top:1px solid var(--line);background:rgba(0,0,0,.22)}
-.cmdline label{color:var(--green);font-weight:700;white-space:nowrap;font-size:13.5px}
-.cmdline input{flex:1;background:none;border:0;color:var(--text);font:inherit;font-size:13.5px;caret-color:var(--amber);min-width:0}
-.cmdline input:focus{outline:none}
-.blink{width:9px;height:16px;background:var(--amber);animation:blink 1.05s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
-.chip{font:inherit;font-size:11.5px;padding:5px 10px;border:1px solid var(--line);background:none;
-  color:var(--dim);cursor:pointer}
-.chip:hover{border-color:var(--cyan);color:var(--cyan)}
+/* ===== HERO ===== */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;
+  background:var(--deep);overflow:hidden;
+  padding:calc(96px + env(safe-area-inset-top,0px)) 0 90px;color:#E8EFEC}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 80% at 50% 10%,transparent 30%,rgba(12,19,17,.85) 100%)}
+.hero .wrap{position:relative;z-index:3}
+.hero h1{color:#fff}
+.hero h1 em{font-style:italic;color:var(--glow)}
+.hero .lede{color:#A9B8B2;margin:22px 0 34px}
+.pill{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:500;
+  padding:8px 16px;border-radius:999px;margin-bottom:24px;
+  background:rgba(95,208,164,.12);color:var(--glow);border:1px solid rgba(95,208,164,.25)}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--glow);flex:none;
+  box-shadow:0 0 0 0 rgba(95,208,164,.55);animation:ping 2.4s ease-out infinite}
+@keyframes ping{70%{box-shadow:0 0 0 8px rgba(95,208,164,0)}100%{box-shadow:0 0 0 0 rgba(95,208,164,0)}}
+.actions{display:flex;flex-wrap:wrap;gap:11px}
+@keyframes drop{0%,100%{transform:scaleY(.4);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
 
-/* sections */
-section{padding:clamp(46px,7vw,84px) 0}
-.sec-title{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px;
-  font-size:clamp(19px,2.6vw,28px);font-weight:800;letter-spacing:-.01em}
-.sec-title em{font-style:normal;color:var(--dim);font-weight:400;font-size:12px}
-.rule{height:1px;background:var(--line);margin:14px 0 26px}
-.hint{color:var(--dim);font-size:13px;margin-bottom:22px;max-width:70ch}
+/* word reveal */
+.rw{display:inline-block;overflow:hidden;vertical-align:bottom;
+  padding-bottom:.18em;margin-bottom:-.18em}
+.rw>span{display:inline-block;transform:translateY(130%);transition:transform .9s var(--ease)}
+.in .rw>span,.hero.go .rw>span{transform:none}
+.hero .pill,.hero .lede,.hero .actions{opacity:0;transform:translateY(14px);
+  transition:opacity .8s ease,transform .8s var(--ease)}
+.hero.go .pill{opacity:1;transform:none;transition-delay:.15s}
+.hero.go .lede{opacity:1;transform:none;transition-delay:.55s}
+.hero.go .actions{opacity:1;transform:none;transition-delay:.68s}
 
-/* project listing */
-.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
-.filter{font:inherit;font-size:11.5px;padding:6px 12px;border:1px solid var(--line);background:none;
-  color:var(--dim);cursor:pointer}
-.filter:hover{color:var(--text);border-color:var(--dim)}
-.filter[aria-pressed="true"]{background:var(--amber);color:var(--bg);border-color:var(--amber);font-weight:700}
+/* ===== marquee ===== */
+.strip{background:var(--ink);color:#fff;overflow:hidden;padding:15px 0}
+.track{display:flex;width:max-content;gap:0;will-change:transform}
+.track span{font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:0 24px;
+  color:rgba(255,255,255,.75);white-space:nowrap}
+.track span.d{color:var(--glow)}
 
-.ls{border:1px solid var(--line);background:var(--panel)}
-.ls-head{display:grid;grid-template-columns:26px minmax(0,1.4fr) minmax(0,1.7fr) 128px 108px;
-  gap:14px;padding:8px 14px;border-bottom:1px solid var(--line);
-  font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);background:rgba(0,0,0,.25)}
-.proj{border-bottom:1px solid var(--line)}
-.proj:last-child{border-bottom:0}
-.proj.hidden{display:none}
-.row{display:grid;grid-template-columns:26px minmax(0,1.4fr) minmax(0,1.7fr) 128px 108px;
-  gap:14px;align-items:center;width:100%;padding:13px 14px;background:none;border:0;color:inherit;
-  font:inherit;text-align:left;cursor:pointer;transition:background .15s}
-.proj:hover .row,.row[aria-expanded="true"]{background:var(--panel2)}
-.row[aria-expanded="true"]{box-shadow:inset 3px 0 0 var(--amber)}
-.tw{color:var(--amber);font-weight:700;transition:transform .25s}
-.row[aria-expanded="true"] .tw{transform:rotate(90deg)}
-.pname{font-weight:700;font-size:15px;letter-spacing:-.01em}
-.proj:hover .pname{color:var(--cyan)}
-.pdesc{color:var(--dim);font-size:13px;line-height:1.5}
-.ptech{font-size:11.5px;color:var(--text);display:flex;align-items:center;gap:7px}
-.dot{width:7px;height:7px;flex:none;background:var(--dim)}
-.dot.html{background:#E44B23}.dot.ts{background:#3178C6}.dot.js{background:#F1E05A}.dot.react{background:#61DAFB}
-.flag{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  padding:4px 8px;border:1px solid currentColor;justify-self:start;white-space:nowrap}
-.flag.live{color:var(--green)}.flag.gated{color:var(--amber)}.flag.repo{color:var(--dim)}
-.led{display:inline-block;width:6px;height:6px;background:var(--green);margin-right:6px;
-  box-shadow:0 0 0 0 rgba(91,228,155,.55);animation:pulse 2.2s infinite}
-@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(91,228,155,0)}100%{box-shadow:0 0 0 0 rgba(91,228,155,0)}}
+/* ===== sections ===== */
+section{padding:clamp(56px,11vw,110px) 0}
+.sand{background:var(--sand)}
+.head{margin-bottom:34px}
+.head h2{margin:12px 0 10px}
 
-.panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s ease}
-.panel.open{grid-template-rows:1fr}
-.panel-in{overflow:hidden}
-.pad{padding:6px 14px 26px 40px;display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:clamp(18px,4vw,44px)}
-.pad h4{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:9px}
-.pad h4::before{content:"## ";color:var(--dim)}
-.pad p{color:var(--dim);font-size:13.5px;max-width:64ch}
-.pad p+h4{margin-top:20px}
-.duo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
-.feat{list-style:none;font-size:13px;color:var(--dim);line-height:1.6}
-.feat li{padding:4px 0 4px 16px;position:relative}
-.feat li::before{content:"-";position:absolute;left:0;color:var(--cyan)}
-.meta{list-style:none;font-size:12.5px;color:var(--dim);line-height:2}
-.meta b{color:var(--text);font-weight:500}
-.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
-.btn{font:inherit;font-size:12px;font-weight:700;padding:9px 15px;border:1px solid var(--cyan);
-  color:var(--cyan);background:none;display:inline-block;cursor:pointer}
-.btn:hover{background:var(--cyan);color:var(--bg)}
-.btn.alt{border-color:var(--line);color:var(--dim)}
-.btn.alt:hover{background:var(--dim);color:var(--bg);border-color:var(--dim)}
-.warn{font-size:12px;color:var(--amber);margin-top:14px}
-.warn::before{content:"! ";font-weight:700}
+/* ===== stats ===== */
 
-/* about + tree */
-.cols{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(20px,4vw,54px);align-items:start}
-.box{border:1px solid var(--line);background:var(--panel);padding:20px 22px}
-.box p+p{margin-top:14px}
-.box p{font-size:14px;color:var(--text)}
-.kv{list-style:none;font-size:13px}
-.kv li{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}
-.kv li:last-child{border-bottom:0}
-.kv span:first-child{color:var(--dim)}
-pre.tree{border:1px solid var(--line);background:var(--panel);padding:20px 22px;overflow-x:auto;
-  font-size:13px;line-height:2;color:var(--text)}
-pre.tree b{color:var(--cyan);font-weight:500}
-pre.tree i{color:var(--dim);font-style:normal}
+/* ===== projects ===== */
+.grid{display:grid;gap:16px;perspective:1200px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px 21px;
+  position:relative;transform-style:preserve-3d;transition:box-shadow .4s,border-color .3s,transform .5s var(--ease)}
+.card .sheen{position:absolute;inset:0;border-radius:var(--r);pointer-events:none;opacity:0;
+  transition:opacity .4s;background:radial-gradient(400px circle at var(--mx,50%) var(--my,50%),rgba(95,208,164,.14),transparent 60%)}
+@media (hover:hover) and (pointer:fine){
+  .card:hover{box-shadow:0 26px 60px -32px rgba(20,23,26,.42);border-color:#D6CFC2}
+  .card:hover .sheen{opacity:1}
+}
+.card.feature{background:linear-gradient(170deg,#fff,#FBF9F5)}
+.ctop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:11px}
+.tl{display:flex;align-items:center;gap:13px;min-width:0}
+.plogo{width:46px;height:46px;border-radius:12px;object-fit:cover;flex:none;
+  border:1px solid var(--line);background:#fff}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;
+  padding:5px 12px;border-radius:999px;white-space:nowrap;flex:none}
+.status.live{background:var(--green-s);color:var(--green)}
+.status.live i{width:6px;height:6px;border-radius:50%;background:var(--dot)}
+.status.priv{background:#F2F2F0;color:var(--soft)}
+.status.dev{background:#FBF2E2;color:#8A6520}
+.card p{font-size:15px;margin-bottom:15px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:17px}
+.tag{font-size:12px;color:var(--body);background:var(--sand);border-radius:7px;padding:4px 10px}
+.card.feature .tag{background:#F0ECE3}
+.feats{list-style:none;margin:0 0 17px;display:grid;gap:8px}
+.feats li{font-size:14.5px;padding-left:21px;position:relative;line-height:1.5}
+.feats li::before{content:"";position:absolute;left:4px;top:9px;width:5px;height:5px;border-radius:50%;background:var(--dot)}
+.clink{display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:500;color:var(--ink)}
+.clink span{border-bottom:1.5px solid var(--dot);padding-bottom:2px}
+.clink em{font-style:normal;transition:transform .3s var(--ease)}
+@media (hover:hover){.card:hover .clink em{transform:translateX(5px)}}
+.note{font-size:13.5px;color:var(--soft)}
 
-/* contact */
-.contact .box{max-width:640px}
-.mail{font-size:clamp(15px,2.4vw,24px);font-weight:700}
-.links{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px;font-size:13px;align-items:center}
-.linkbtn{font:inherit;font-size:13px;background:none;border:0;padding:0;color:var(--cyan);cursor:pointer}
-.linkbtn:hover{background:var(--cyan);color:var(--bg)}
-.linkbtn.shown{color:var(--text)}
-.linkbtn.shown:hover{background:none;color:var(--cyan)}
-.copied{color:var(--green);font-size:11.5px;margin-left:-10px;opacity:0;transition:opacity .25s}
-.copied.on{opacity:1}
+/* ===== about ===== */
+.about p+p{margin-top:17px}
+.about p{font-size:clamp(16px,4.2vw,18px);max-width:62ch}
+.facts{margin-top:30px;border-top:1px solid var(--line)}
+.fact{display:flex;justify-content:space-between;gap:16px;padding:15px 0;
+  border-bottom:1px solid var(--line);font-size:14.5px}
+.fact b{color:var(--ink);font-weight:500;text-align:right}
 
-/* status bar */
-.status{position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--panel);
-  border-top:1px solid var(--line);font-size:11.5px}
-.status .wrap{display:flex;justify-content:space-between;gap:14px;height:34px;align-items:center;overflow:hidden;white-space:nowrap}
-.status k{color:var(--bg);background:var(--amber);padding:1px 5px;font-weight:700;margin-right:5px}
-.status .r{color:var(--dim)}
+/* ===== stack ===== */
+.stack{display:grid;gap:15px}
+.sgroup{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:21px}
+.sgroup h3{font-size:16px;margin-bottom:13px}
+.sgroup .tags{margin:0}
 
-.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+/* ===== contact ===== */
+.contact{background:var(--deep);color:#E8EFEC;text-align:center;position:relative;overflow:hidden}
+.contact::before{content:"";position:absolute;left:50%;top:-40%;width:min(800px,140vw);height:min(800px,140vw);
+  transform:translateX(-50%);background:radial-gradient(circle,rgba(95,208,164,.13),transparent 62%);pointer-events:none}
+.contact .wrap{position:relative;z-index:2}
+.contact h2{color:#fff;margin-bottom:16px}
+.contact .lede{color:#A9B8B2;margin:0 auto 32px}
+.big{font-family:var(--serif);font-size:clamp(20px,5.6vw,34px);color:#fff;display:inline-block;
+  border-bottom:2px solid var(--glow);padding-bottom:5px;word-break:break-word;transition:color .3s}
+.big:hover{color:var(--glow)}
+.cways{display:grid;gap:10px;max-width:420px;margin:34px auto 0}
+.way{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;
+  padding:15px 20px;border-radius:13px;font-size:15px;color:#E8EFEC;
+  background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);transition:.3s}
+.way:hover{background:rgba(95,208,164,.1);border-color:rgba(95,208,164,.35)}
+.way b{font-weight:500;color:#fff}
+.way i{font-style:normal;color:var(--glow)}
+
+footer{background:var(--deep);border-top:1px solid rgba(255,255,255,.08);
+  padding:24px 0 calc(24px + env(safe-area-inset-bottom,0px));font-size:13.5px;color:#6E807A}
+.foot{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between}
+
+/* ===== reveal ===== */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .75s ease,transform .75s var(--ease)}
 .rv.in{opacity:1;transform:none}
 
-@media (max-width:900px){
-  .cols{grid-template-columns:1fr}
-  .ls-head{display:none}
-  .row{grid-template-columns:26px 1fr;gap:8px 12px;padding:15px 12px}
-  .pdesc,.ptech,.flag{grid-column:2}
-  .pad{grid-template-columns:1fr;padding-left:14px}
-  .duo{grid-template-columns:1fr;gap:6px}
-  .status .r{display:none}
+/* ===== desktop ===== */
+@media (min-width:760px){
+  :root{--pad:44px}
+  .bar{height:72px}
+  .bar nav{display:flex;gap:32px}
+  .bar nav a{font-size:14.5px;color:rgba(255,255,255,.72);transition:color .3s}
+  .bar nav a:hover{color:#fff}
+  header.solid nav a{color:var(--body)}
+  header.solid nav a:hover{color:var(--ink)}
+  .grid{grid-template-columns:1fr 1fr;gap:20px}
+  .card{padding:30px}
+  .card.feature{grid-column:1/-1;padding:40px}
+  .feats{grid-template-columns:1fr 1fr;gap:9px 28px}
+    .stack{grid-template-columns:repeat(2,1fr)}
+  .cways{max-width:560px;grid-template-columns:repeat(2,1fr)}
 }
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
-  pre.ascii span{opacity:1;transform:none}
-  .rv{opacity:1;transform:none}
-  .scan{display:none}
+@media (min-width:1040px){
+  .stack{grid-template-columns:repeat(4,1fr)}
+  .about-cols{display:grid;grid-template-columns:1.45fr 1fr;gap:64px;align-items:start}
+  .facts{margin-top:0}
+  .hero .lede{font-size:20px}
 }
 </style>
 </head>
 <body>
-<div class="scan" aria-hidden="true"></div>
-<div class="vig" aria-hidden="true"></div>
 
-<header>
+<div class="prog" id="prog"></div>
+
+<header id="hdr">
   <div class="wrap bar">
-    <span class="who">marko@portfolio:<span class="cy">~</span><b>$</b></span>
+    <a href="#top" class="brand">Marko Mladenović</a>
     <nav>
-      <a href="#projekti"><k>1</k> projekti</a>
-      <a href="#omeni"><k>2</k> o-meni</a>
-      <a href="#stack"><k>3</k> stack</a>
-      <a href="#kontakt"><k>4</k> kontakt</a>
+      <a href="#projekti">Projekti</a>
+      <a href="#omeni">O meni</a>
+      <a href="#stack">Tehnologije</a>
     </nav>
+    <a href="#kontakt" class="cta">Kontakt</a>
   </div>
 </header>
 
-<main>
+<main id="top">
 
-<section class="hero">
+<section class="hero" id="hero">
+  <canvas id="scene" aria-hidden="true"></canvas>
   <div class="wrap">
-    <div class="ascii-wrap" id="asciiWrap"><pre class="ascii" id="ascii" aria-label="Marko"></pre></div>
-    <p class="chakra" aria-hidden="true">&gt; chakra: <b>100%</b> &mdash; sistem pod naponom</p>
-
-    <p class="tag">Web developer u Mariboru. Gradim <b>interne alate za ugostiteljstvo</b> — učenje jezika za nove konobare, praćenje recenzija, evidencija zaposlenih. Sve što vidiš ispod je u upotrebi, ne u fioci.</p>
-
-    <div class="term">
-      <div class="term-top">
-        <span class="leds" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span>bash — marko@portfolio</span>
-      </div>
-      <div class="log" id="log" aria-live="polite"></div>
-      <form class="cmdline" id="form">
-        <label for="cmd">marko@portfolio:~$</label>
-        <input id="cmd" name="cmd" autocomplete="off" spellcheck="false" aria-label="Unesi komandu">
-        <span class="blink" aria-hidden="true"></span>
-      </form>
-    </div>
-
-    <div class="chips" id="chips">
-      <button class="chip" data-cmd="help">help</button>
-      <button class="chip" data-cmd="ls">ls</button>
-      <button class="chip" data-cmd="whoami">whoami</button>
-      <button class="chip" data-cmd="open myhero">open myhero</button>
-      <button class="chip" data-cmd="contact">contact</button>
-      <button class="chip" data-cmd="clear">clear</button>
+    <span class="pill"><i></i>Dostupan za nove projekte</span>
+    <h1>
+      <span class="rw"><span>Pravim aplikacije</span></span><br>
+      <span class="rw"><span>koje ljudi koriste</span></span><br>
+      <span class="rw"><span><em>svakog dana</em>.</span></span>
+    </h1>
+    <p class="lede">Web developer iz Maribora. Pravim web aplikacije i sajtove koji rešavaju konkretan poslovni problem — sisteme za evidenciju i planiranje, SaaS platforme i klijentske sajtove koji rade u produkciji.</p>
+    <div class="actions">
+      <a href="#projekti" class="btn primary">Pogledaj projekte</a>
+      <a href="#kontakt" class="btn ghost">Kontaktiraj me</a>
     </div>
   </div>
 </section>
+
+<div class="strip" aria-hidden="true">
+  <div class="track" id="track">
+    <span>React</span><span class="d">◆</span><span>TypeScript</span><span class="d">◆</span><span>Supabase</span><span class="d">◆</span><span>Next.js</span><span class="d">◆</span><span>Cloudflare</span><span class="d">◆</span><span>PWA</span><span class="d">◆</span><span>PostgreSQL</span><span class="d">◆</span>
+    <span>React</span><span class="d">◆</span><span>TypeScript</span><span class="d">◆</span><span>Supabase</span><span class="d">◆</span><span>Next.js</span><span class="d">◆</span><span>Cloudflare</span><span class="d">◆</span><span>PWA</span><span class="d">◆</span><span>PostgreSQL</span><span class="d">◆</span>
+  </div>
+</div>
 
 <section id="projekti">
   <div class="wrap">
-    <h2 class="sec-title rv">~/projekti <em>&mdash; 5 direktorijuma</em></h2>
-    <div class="rule"></div>
-    <p class="hint rv">Klikni red da otvoriš opis. Zeleno je uživo, žuto traži pristup, sivo je interno.</p>
-
-    <div class="filters rv">
-      <button class="filter" data-filter="all" aria-pressed="true">sve</button>
-      <button class="filter" data-filter="live" aria-pressed="false">uživo</button>
-      <button class="filter" data-filter="gated" aria-pressed="false">uz pristup</button>
-      <button class="filter" data-filter="repo" aria-pressed="false">interno</button>
+    <div class="head rv">
+      <p class="eyebrow">Radovi</p>
+      <h2>Izabrani projekti</h2>
     </div>
 
-    <div class="ls rv">
-      <div class="ls-head"><span></span><span>naziv</span><span>opis</span><span>tehnologija</span><span>status</span></div>
+    <div class="grid">
 
-      <article class="proj" data-status="live">
-        <button class="row" aria-expanded="false" aria-controls="p0">
-          <span class="tw">&rsaquo;</span>
-          <span class="pname">MyHero</span>
-          <span class="pdesc">SaaS za personalne trenere — planovi, ishrana, napredak klijenata</span>
-          <span class="ptech"><i class="dot react"></i>React · Supabase</span>
-          <span class="flag live"><i class="led"></i>uživo</span>
-        </button>
-        <div class="panel" id="p0"><div class="panel-in"><div class="pad">
-          <div>
-            <h4>Problem</h4>
-            <p>Personalni trener vodi klijente kroz WhatsApp, Excel i PDF-ove — plan treninga u jednom fajlu, ishrana u drugom, napredak u trećem. Klijent ne zna šta radi danas, trener ne zna da li je odradio.</p>
-            <h4>Rešenje</h4>
-            <p>Jedna aplikacija sa dva odvojena pogleda: trener vodi sve klijente, klijent vidi samo svoje. Radi u pregledaču i instalira se na telefon kao PWA. Naplata ide kroz pretplatu — Starter, Pro i Studio, sa probnim periodom.</p>
 
-            <div class="duo">
-              <div>
-                <h4>Za trenera</h4>
-                <ul class="feat">
-                  <li>klijenti sa ciljem i nivoom, pozivnica na mejl</li>
-                  <li>plan treninga: dani, vežbe, serije / ponavljanja / kg / pauza, video demonstracije</li>
-                  <li>plan ishrane: obroci i sastojci, AI računa makronutrijente</li>
-                  <li>napredak: mere, grafikon težine, galerija fotografija</li>
-                  <li>biblioteka od ~148 vežbi + dodavanje svojih</li>
-                  <li>zajednički inbox sa svim klijentima i brojačem nepročitanih</li>
-                  <li>PDF plana i sopstveni logo studija na svemu</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Za klijenta</h4>
-                <ul class="feat">
-                  <li>svoj plan treninga sa videima, ishrana i raspored</li>
-                  <li>beleži težinu, mere i slike napretka</li>
-                  <li>označava trening kao odrađen</li>
-                  <li>plutajući chat sa trenerom</li>
-                  <li>skida svoj plan kao PDF</li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="acts">
-              <a class="btn" href="https://my-hero-lake.vercel.app" target="_blank" rel="noopener">otvori aplikaciju &rarr;</a>
-            </div>
-          </div>
-          <div>
-            <h4>Info</h4>
-            <ul class="meta">
-              <li>uloga — <b>dizajn i razvoj</b></li>
-              <li>frontend — <b>React + Vite</b></li>
-              <li>backend — <b>Supabase</b></li>
-              <li>hosting — <b>Vercel (GitHub)</b></li>
-              <li>sigurnost — <b>RLS po nalogu</b></li>
-              <li>model — <b>B2B SaaS, pretplata</b></li>
-              <li>uređaji — <b>web + PWA</b></li>
-            </ul>
-          </div>
-        </div></div></div>
-      </article>
-
-      <article class="proj" data-status="live">
-        <button class="row" aria-expanded="false" aria-controls="p1">
-          <span class="tw">&rsaquo;</span>
-          <span class="pname">bascarsija-jezici</span>
-          <span class="pdesc">Učenje jezika za nove konobare u Sloveniji</span>
-          <span class="ptech"><i class="dot html"></i>HTML · Pages</span>
-          <span class="flag live"><i class="led"></i>uživo</span>
-        </button>
-        <div class="panel" id="p1"><div class="panel-in"><div class="pad">
-          <div>
-            <h4>Problem</h4>
-            <p>Nov konobar iz regiona dolazi u Sloveniju i prvog dana staje za šank bez rečnika struke. Opšti kursevi ne pokrivaju ono što mu stvarno treba — poručivanje, alergije, naplatu, reklamaciju gosta.</p>
-            <h4>Rešenje</h4>
-            <p>Web aplikacija sa lekcijama sklopljenim oko realnih situacija u lokalu. Otvara se u pregledaču na telefonu, bez instalacije, pa se uči između smena.</p>
-            <div class="acts">
-              <a class="btn" href="https://bascarsija-jezici.pages.dev/" target="_blank" rel="noopener">otvori aplikaciju &rarr;</a>
-            </div>
-          </div>
-          <div>
-            <h4>Info</h4>
-            <ul class="meta">
-              <li>uloga — <b>dizajn i razvoj</b></li>
-              <li>stack — <b>HTML, CSS, JS</b></li>
-              <li>hosting — <b>Cloudflare Pages</b></li>
-              <li>korisnici — <b>novi radnici</b></li>
-            </ul>
-          </div>
-        </div></div></div>
-      </article>
-
-      <article class="proj" data-status="gated">
-        <button class="row" aria-expanded="false" aria-controls="p2">
-          <span class="tw">&rsaquo;</span>
-          <span class="pname">bascarsija-recenzije</span>
-          <span class="pdesc">Recenzije svih restorana lanca na jednom mestu</span>
-          <span class="ptech"><i class="dot html"></i>HTML · Workers</span>
-          <span class="flag gated">uz pristup</span>
-        </button>
-        <div class="panel" id="p2"><div class="panel-in"><div class="pad">
-          <div>
-            <h4>Problem</h4>
-            <p>Recenzije su stizale razbacano po platformama i lokalima, pa niko nije imao pregled šta se ponavlja — ni menadžment, ni šefovi smene.</p>
-            <h4>Rešenje</h4>
-            <p>Jedno mesto sa svim recenzijama po restoranu, iza prijave jer su podaci poslovni. Radi na Cloudflare Workers infrastrukturi.</p>
-            <div class="acts">
-              <a class="btn" href="https://bascarsija-recenzije.bascarsija-recenzije.workers.dev/" target="_blank" rel="noopener">otvori aplikaciju &rarr;</a>
-              <a class="btn alt" href="mailto:tvoj@email.com?subject=Demo%20pristup%20recenzije">traži demo pristup</a>
-            </div>
-            <p class="warn">Sadrži poslovne podatke, pa je iza prijave. Demo nalog šaljem na zahtev.</p>
-          </div>
-          <div>
-            <h4>Info</h4>
-            <ul class="meta">
-              <li>uloga — <b>dizajn i razvoj</b></li>
-              <li>stack — <b>HTML, CSS, JS</b></li>
-              <li>hosting — <b>Cloudflare Workers</b></li>
-              <li>pristup — <b>login sa šifrom</b></li>
-            </ul>
-          </div>
-        </div></div></div>
-      </article>
-
-      <article class="proj" data-status="repo">
-        <button class="row" aria-expanded="false" aria-controls="p3">
-          <span class="tw">&rsaquo;</span>
-          <span class="pname">HR-APP</span>
-          <span class="pdesc">Evidencija zaposlenih: ugovori, sati, odsustva, plate</span>
-          <span class="ptech"><i class="dot ts"></i>TypeScript</span>
-          <span class="flag repo">interno</span>
-        </button>
-        <div class="panel" id="p3"><div class="panel-in"><div class="pad">
-          <div>
-            <h4>Problem</h4>
-            <p>Podaci o zaposlenima živeli su u tabelama i fasciklama, pa je svaka provera ugovora ili sati bila ručno traženje.</p>
-            <h4>Rešenje</h4>
-            <p>Centralizovan sistem za sve podatke o zaposlenima — lične informacije, ugovori, radno vreme, odsustva i plate, sa pregledima za menadžment.</p>
-            <div class="acts">
-              <a class="btn alt" href="mailto:tvoj@email.com?subject=HR-APP%20prikaz">traži prikaz</a>
-            </div>
-            <p class="warn">Interni sistem sa podacima o zaposlenima — nije javno dostupan.</p>
-          </div>
-          <div>
-            <h4>Info</h4>
-            <ul class="meta">
-              <li>uloga — <b>dizajn i razvoj</b></li>
-              <li>stack — <b>TypeScript</b></li>
-              <li>status — <b>u razvoju</b></li>
-              <li>korisnici — <b>menadžment, HR</b></li>
-            </ul>
-          </div>
-        </div></div></div>
+      <article class="card feature rv tilt">
+        <span class="sheen"></span>
+        <div class="ctop"><div class="tl"><img class="plogo" src="data:image/webp;base64,UklGRp4UAABXRUJQVlA4IJIUAABwRgCdASqAAIAAPj0YiUMiIaEXC7bgIAPEsQBj0uiuTyl/B+apan9T5KuyHnrze+i/O7/p/UV5h/659I/zCfsf+0vvPf8T1a/4/7gPkA/tH+u6zL0AP2A9Nj92/g//tn/a9Jj//5rd25f6Hwx/Fvmv7r+VH9t9qnLP1v/y/oR/HftV+M/sf7iewv+f8EfgD/P/l38AX5H/LP8b+Y3u4PKdIf+L+QHwC+z30v/Pf3/9xf7l6QX9p6H/X72AP5f/Tv8n+ZP7/+8z4H3kP68/AB/Lv7H/yP8H+Tn0v/yv/Q/yn5b+2L83/uv/I/y35R/YP/K/6V/ov7f/k//T/iP///6PvN9m37eezZ+1v/2Vyl/vV/5VKjz3aP1QykdhJ5APc2Dn7ZdVf6ccEEU2cfgR/H+7Q7bzEDxx2OOUo5HB83VTLJ9HpjmzEjC4fXo5b38EeS/m3ILiIED5ISxE7wtcG2euvnxTiPz1bM0f6VgZn/k4uWzVcTxHeAymf20C0+I/UZhbngfVvmRHGE5xuFvi/IuacWZhXmCX+NDL5y+ewz/+p1sYaWIF8ZLcs28NFh6kGg/kmVsqovAEkuCFMPwq2AOmfpUFEgBbUieAFkcEHujWyUltC6aVrw8CAM3z0lT8un6uBmVNfJTLmnneiaUCPr2MdEFyfxBIXYmnqLt+PhSpdSszzweN5s7Pez/vtaR/C7pX2z3yUakoE0/kxfz0JuXPUks4/KH3119K6YTgtL3ZIiOSu42J///0rX3l4AD+/SFF/lAudDOhCA1NGgfOpqCNVxraEHbZTAaLwjgBLU9DNPoOnDI9Jc3rcjTF4zIO7YQ4KGTQae7/Y6iAuiBXX0BjkpEgE+fSMWLwfLLAe7IzYO9ucJ3A++tLtmOAw6Fd/H42MwBHGZFEllUIZLSSVS/2g5vcmLnfrlc3mnavObOI8aI2v211S3VBkxZx00OlI2vUMtmp8qMYeIPGNfmmUSnV47eNuqX8n/KIWsWeb+qhByoFhSlyKldWQKzQnLhq1a9o4wc8b2EkFRVOboOYa+nq6t4fGAnSyym1wYUIVv/ie3fUuMHg+yt7fqcMF283l0f3L0GYvnUR1ATriKS61P+fQ2yYNW+7n4X+zzTToNw0ClLi0oGWBLx8kRL0MymnJG2cfVAG62wUigP5WIrYO4uK4TKZc0oGhePt1iDppPKYn+vQoUa3J1j4owsPPUc/3sDsgEkjKwfR/YmpKSVgTXNx+2UFAD47/Kagn1cZ1a10tXl+k8OqgCS0Aok7w3FAfLXt8iESB/qr5wx3NY+c71DJCmBp8Z8O9Ej2cG3SQAO4wBsypaJw18RXXA8F4QSqdOTvJCdX/Xfy7g7KLjlBh2Y3WdebPWlVTVTsyjf5hVI1BH+w45R7kklVB4MDexggGQOpcvKBlXwhEkaHyehbTQMwaQoxkzYl17N1atUXG+ZI/v/5XF7oJOCF4kcAHMCpzmwCyNIJPS1ziKHS48P77eINsZRs1Dz8Jr+IpQs1Szt9cmfYZFf8FfldmOBLRRUonebEEh70kHbY/ibFXv6Kb8rg70ZU1H2WTyIBB+HpDn6+537VprFGcEbozB0Xxj6PuyivNEFDRjN4X5+9pYEinHxVo7yEKGbOhM5+KHutQyZnvPa1gT6v86hKBQE9/5jn+pFfx2ZHFAWxVbLvwU+fo441K2vwIKl3FZlRp4G1Y3/J06Ckwcg4Shqw4tvDV+yaX2yZY/ersOF0+a5ckSq7XmEIw+Y9yE7WRv48icStha4wa76UPLc1L63uBYR8R/Ht6xzXRInG16ZpFANpf94ROsXDpeTGUQP+i93HIeh5aI5v7H9f/L1SHq06I5htgbtWAe6e+px7HYwszEYhxpkrrlTfSwBiuXB9Kvtvqpg6HzpKuSS5uumAuXIzKl0bPRqoCbr464G0S1zdfbxAfPMN1nVvKIBuUq1NipqkZYnl23gzSEbQOpQKpO0xXlSqIkuiX2N5DYj/k3v4bSdKcXHKIpqiBfF4Q/K/XsW66cM1McFPqrBnFtmBlWaLI5zRGKt6xoremTPylGbgmwd9/SQXhCUVfxsqOisZHsi6mMCZect0xcU04dItHXVEQ7157+34ijki7Kgv8shh+Q/pJuxpeQ8MEsVP+xrcEXYS2NluJIqYFPC1u9lLIned+Gu1+Ec08d5gtFCJa7Bwt4EVsvNO6+nmKhYEcCcdgwHfeFHKBfaQDURXVWiO0V2kiv9XxcRcnpyofrXpx8Xx+PnFBJsVE8uxAVLNP71jG6imOp8jTopF0qSHbmjL8zmj8W7SGJYM85snYOXj5ad+6aGcVHbM4yeWaHTalL9DCbeNmVfYbhZdqDEFzhWRVJrl8T7hS167mOGaTARhpOpEuPwix5TFsieuoMKUwhNYjd20HozCfZQqnk7Je3+p4/v4Dj9/PIjv3uXGTbfLAtSP2TROzgWa4qWcyKG/VZKrlsmcNzmgbscMqx84qWlypj2NwDxdC7ILaCSCWbps59c73mZJTPYw3VCcxZEQ9BT9yJrk6XdiVxHEVWvjENQeQELCGcrg0gdfWwPuQdIfdEw7Q0rmtlwt7M3AhjsZj9mN6G4HPERz4H5iHoGeWSRFyFb2sau6lzpTcA2ahyKnJPaSi1hBZro7Zcy7q0m6W6YIkn4F5bz+9FkORhyTXzk4rfGeZj9zk33iPYzcwV+HV8hbcpsOlFQG1dthd5JychM+EacNGZBRPsMzIZhfPBqMWLxyKMVIO0xkssIDBOywhtcBEIrZ3JHDWzuGXKhSKF8s2ofu7ixGqkJuS2qqEvEV02yFs/Uc++bGDvZOyz56ukXx3GbmPKTYva/0IaLgAz46zD/5U8IKX3qAwIuCbWMYfNsgG9mfhzQVMz4uZe95ZGsoHeywjD7dyhgcGQxcGramBdbU27emgI+Wzuh0zL9LEbx5080IdngxuwDCmLDQ8dbKMyAhkWamE+TB/nTQrLEJzbQn+C0kLfoTSTS+zkZP2rt9UZ0ClLGYBUr4DkY/8PEglXhE0GCdQJkVV3K25EtJ16tKlFu3B6HrToT9pQOsRwtjCuuyEAdTPQzRy3LV2Hg9wSnxMF55p6B+ocGZpBxSy7U4DRlKfbfu5n6tfE3xvx7XPw7hqs9bKEN60YDY1sixyno+AcXZUV6sbx7L2YhFTGXgPb5Haan0qLzoEX5JLbi2aNtPfdZo8z/QOxjoZcQLPDswYybJD7CBMM/BX5RHHoO2NcFziALp48/+yfEouXybQCautyavGJDml/141FvZK30RnA61HgD2p6jVagJAK1/2OQrOLPWCFY/bZSErleTPf8uQp5E/MvX/guVClJvPYl9GcOUtrZ13Nc1dpzFk243Cmf1NfE8GpDTj1wa+z/tHb4EBL4Fh3iv5w6YwnuUPuGo2IBM8ljrjMFNgv4u3Zezs23ihUAbhSXtIEbHgLkAK2o1uvmtK4mhd/jat/gSZbbO70l1dxIIjvD1YadciE4MTbqJPtPuu9Xb0RWDG5fa95Bz5O4fi3c9HOjCd+WFahE6vfT03/D4/GOYx6lfqpxFcesn10Bz9VbF9+HL97HNcwNCffQYYOZ6clCo7h2WONgcDXLvN6CV+3RKUOqSo76sO7HSgweZDdXUb7eAkMtmHldvH/AsNyhEp5Nj2kH6JwEPWZbWQCmKn33b+NyxU5mKVywnYeO2OaU5vckPr9UFMsotek8SbRg8h86LAADUPFl80UOrsQt5pLoczzC2/t8mBeJ6gBwyUkb48FkhsNUvNH01tXo8rwdNCGZ+7T66e5GkuKzGkkihe1dplOhE45NToyjbkiom3r3zmGCsWnoP1ZVWQEu3SkumQiwqTDDqPT44BL4JJiSt8EL5Nl5P5OY/PXEXHv6J9D4mFHk+PZ4o12skrn9edu/Bj3VtU3y09TiL+Avw1RUlpLwJzT0FqQ0RfY2An9s+fsc7X3AV6x8lH4+8wOdccUVzT0bU9HiaupGULLGyLk1YIM5WeXqlcUDYArRuW3amTtPzESrOf+UbFWFzvX84dlC/WN/DO+NFFSRASgl5ID5X1uH2pbf9FXWyPwS9Oh5z58S5cp0Rh+vzgR9hm4gMe6rEPpf52BT1zXhI+vwwQdFSkUN0oy3bhorYFYHuxXNNz2dF336FZ0bNs/uzOdoK9/Zfu5i8etJpdh/2DQg3kRALuMOqhrwzfM3JnxZquOR02HDr+HkIuLksv9O2BH5g5glv8h62KALj8df6zu/neeuu+Vm3YpCVcHMUdiUR+tsPqMXL+TAAOzOoAUbmyNktOO9ph2NQb/0iruzKjgG1BNZ8K9nTsSkWgxbiE1HoXRg0SkuX4WhqgsIviCqelAxcQRDhaM/SFrgKgjfIbt7v8RtrkJPPEBdgrtErxB+rxrjKUAgfkdRsdIuXgnHxpSjgiQ8uO+pjs7aEP1sRbbghpNEJtWHpL7DAWiniI2z6ol1FgdUQAVsC162TJcQtKpHQVl7wA1cYvfgvc5jz7BD+jfDCUaAUtrLrYYXGASeUb2YLWgkRA7wePT1CaexWHJDiMMDYYisOjlef+PyGVePXPH4Aq2iqvKt39v8Wb9hCnDXRyoiVQQ3Sq8zQNzLJnEveo8KrM4afLjJsHkEw8bfxCB6367SEYK4Vk7RQ/JiM9OzPyK5OClvcoIOKxDbiqp36gPwj0FMzCjAhwTPt9r8PEoWEjpsU/Hd7v5EzVQXsTxNuD4vOjx6KyLo7cClIFXYSY2MddNUhVhQ+/CjayJE7uESGwIFWzwjpPu60xW0+pu+gdUsBS7S5pPbahJZsMnNs3j/8CexF3HVJDJ+OnV1i3J57c9j9WqRBpQTKAgEA2p8IOlEaa8snztv0uEQfrMuB/E+fo95w8MAl1I+EEDJ+XJAVvKQG+5oQ9NnmwTSUvC5HscXP41VU2w7Nbb3u/XEudLc2+B2d7rJljzKrb98zsvXHXLFsZPKFYvwVIRrkNEeQqoJfvaVzYupXvx+3W5pvJgTC0SGpCbDXU3zao55vIHGYH5p/L205OIFQLpA85Xp6TEvbqItPTxiOblu1r+7grdQ2ORxuHHD2S0wvxxg/K8VG02Es0Cf18eug3XcL9laYeZ2NLgxfRjucZMeb0/1kP5tH2xsNZByue4jZKVDrSniN1tkfHkCOrnVnZ4sIpKqtWoFYE/6uXrkSA/CALp2tDsIVfq0v2MRgBoHUuhC87mcyB0JA8rmh/LG2rBmTMfVO00ascnxIl7EwZtkbe83FEOV6L3ub0DEQdSQevbriyE5xl2Oo/O2cUrMQTiOCDNmtUgJ4nmPKXJZLWWG0JLPYD7svehWOkwLFA9StbtQ6Kkb777ad/RO5Qlahr9BZeHBPFLSxSn3j/z3odXud2iAXUQVT5vwYHrMu+sf3V9koC4vagyxQbEr2lCzxwEhYUffYnQuUFwnegvrDuNiTMgNitbL7y9eZSNXAQlpa+Z6spWrvDtXQOQX5NpPDkxM/LWjOGwflhemrsLNJIqBW8FQDEw6r0h1kizZWd6zbM/YgtRRGrhoLI1DsNPqAeBEVdXfvNgoigyxELOuoa5bWzqGPolHatq71SVqk+SGbpAkqZwSq/gRj+07cdsyqdYRoOvTAihC3sKldlZeOJBukvK+TY9ZPFxvJ/7z8OuOJfuM4dFwSnUhTsxwQmRhFz0Wx6AROvja7R6ciOdrsb9nGKxF63KO3c9KJsWsh1vZ5c9Jz3oxlcSJTMrONh/x0LPHSGV3FdjnGa9OZEt9o80q40pUhS9rV5bDTNNlc2tp5BKO7Xibu26CdoqF8csnWlbLBgJMPGTw3jiQ523zaeHXX/ry7uuZ1wu7neGoSctqh63DibuDri5qUlmufmNtdBuZ3mkviLvCHdZOiJB6veYJ9RjylE+ZVLYBnR9HhYxwdYORn5RbT3viCMYk2huHzg3NUl3WHPRGN7zUkxpF4C2LxYlceaeLyrvwuwbUg0p4FSBdgET8IZ+uwwwKfs8+76a06b+oUKoae2wo4N1TaOTX7jWp6Ng4RYxaf9mUz4fVpKzyUTOc+VRK5MS/lIAeBe+omAM3rwbACE68bLZFRGISHz7dkYMMAU6gcGDGJjhJlvrRPketMTzoBn8e0R0ZyJutM4ckHVpZ5mU/3pRqvWrRpUbsMZCLId0t5+UFtX5Kjl76kfCV/5Gh08qt/5BHR177hQ5VbB3hcT98dP/mCjJOMtO8LEHj/CveMVLTTBpg6qjsy65bKz04T0+SqkizNVjE+L2/AMyAgdZH8/yCYdX9jkGEaqANJZa3eFGKvT67Yd7z3BwnSvQ46KFC4KTeeclYLy2cwNdik8q9qBQb1pz0o/DbqX8tRXf+WsQTk4X1oTBmvheJ6YB4Qr1LCVsUWaUZ57Nr2dE0Bmv/vB/e53Eg40VQ/EZAxVxWzh1XaGTyVz572VZbLy5/jjaI2GEIZyHzFMMHhbizMDRw4GqfyB1LSAJg8BhQpmIZQ8p2Zl+6zuvhDaqTuZoT9MO1WlkUlNjUb7IZTDS2xKrVrLbv6/rq82Wnfj+twHrKBBusP3pp4Hte5j/3A8Bcnq7IZWsZZxvepH4fShauaLC8UCsb2CYm9ysDtwmvxT01Jc25y2r+E6Ck9gUkPAlZ5c6ifsAATevzD3cXxiSJfKr+JS57u4tChY1H//BINIDKKZImJafW/B/4qRdap300sfs2hShUngwG/wGiIJOCCChmrTmMAK5OSHiC7fqxTvM3B52U4UVA3Lk6P+5/5z9VJ0RDIdWP3FtRdWIsyGU0offEsvLDRvD+9ZumqaG/7dTmECfGxyq2vH4GUw1uMa2RCVuX27rMvGFwP8T1oYisUFN2xwhlLN4aSumuQqgL+qr17P6vQls1hwNuCYmoKzQNNWoSfARrRsXaniR/6q/SA7XADr/Coq27Fz2vQaK+NolLhyVtBWt1ecUU1hL3D3NdlZausGAFFsbCg+wjgQ41xjTuZKKG/xU1NZTAFyqK7jQU1fXiNSIgaFEao7odf3zf+d683FRGqGc4SxN8AAAAAA" alt="Logo picerije A Modo Mio" width="46" height="46" loading="lazy"><h3>A Modo Mio</h3></div><span class="status live"><i></i>Uživo</span></div>
+        <p>Profesionalni sajt za piceriju A Modo Mio — predstavljanje lokala, ponuda i kontakt, na sopstvenom domenu. Rađen za spoljnog klijenta, od dizajna do postavljanja u produkciju.</p>
+        <div class="tags"><span class="tag">Web sajt</span><span class="tag">Responzivni dizajn</span><span class="tag">Klijentski projekat</span></div>
+        <a class="clink" href="https://amodomio.si/" target="_blank" rel="noopener"><span>Otvori sajt</span><em>→</em></a>
       </article>
 
 
-      <article class="proj" data-status="repo">
-        <button class="row" aria-expanded="false" aria-controls="p5">
-          <span class="tw">&rsaquo;</span>
-          <span class="pname">bascarsija-narudzbe</span>
-          <span class="pdesc">Unos i praćenje narudžbi tokom smene</span>
-          <span class="ptech"><i class="dot html"></i>HTML</span>
-          <span class="flag repo">interno</span>
-        </button>
-        <div class="panel" id="p5"><div class="panel-in"><div class="pad">
-          <div>
-            <h4>O projektu</h4>
-            <p>Alat kojim osoblje unosi narudžbe i prati njihov status tokom smene, umesto papira i dogovora u hodu.</p>
-            <div class="acts"><a class="btn alt" href="mailto:tvoj@email.com?subject=Narudzbe">pitaj za detalje</a></div>
-          </div>
-          <div><h4>Info</h4><ul class="meta">
-            <li>uloga — <b>dizajn i razvoj</b></li><li>stack — <b>HTML, CSS, JS</b></li><li>status — <b>interno</b></li>
-          </ul></div>
-        </div></div></div>
+      <article class="card rv tilt">
+        <span class="sheen"></span>
+        <div class="ctop"><div class="tl"><img class="plogo" src="data:image/webp;base64,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" alt="Logo Baščaršija Jezici" width="46" height="46" loading="lazy"><h3>Baščaršija Jezici</h3></div><span class="status live"><i></i>Uživo</span></div>
+        <p>Platforma za učenje jezika za nove konobare koji dolaze na rad u Sloveniju. Lekcije su složene oko stvarnih situacija u lokalu — poručivanje, alergije, naplata — umesto opšteg vokabulara.</p>
+        <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Cloudflare Pages</span></div>
+        <a class="clink" href="https://bascarsija-jezici.pages.dev/" target="_blank" rel="noopener"><span>Otvori aplikaciju</span><em>→</em></a>
+      </article>
+
+      <article class="card rv tilt">
+        <span class="sheen"></span>
+        <div class="ctop"><div class="tl"><img class="plogo" src="data:image/webp;base64,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" alt="Logo Baščaršija Recenzije" width="46" height="46" loading="lazy"><h3>Baščaršija Recenzije</h3></div><span class="status live"><i></i>Uživo</span></div>
+        <p>Recenzije svih restorana lanca na jednom mestu, sa pregledom po lokaciji. Zamenila je ručno praćenje razbacano po platformama.</p>
+        <div class="tags"><span class="tag">JavaScript</span><span class="tag">Cloudflare Workers</span></div>
+        <a class="clink" href="https://bascarsija-recenzije.bascarsija-recenzije.workers.dev/" target="_blank" rel="noopener"><span>Otvori aplikaciju</span><em>→</em></a>
+        <p class="note" style="margin-top:11px">Sadrži poslovne podatke, pa je iza prijave. Demo pristup šaljem na zahtev.</p>
+      </article>
+
+      <article class="card rv tilt">
+        <span class="sheen"></span>
+        <div class="ctop"><div class="tl"><img class="plogo" src="data:image/webp;base64,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" alt="Logo Baščaršija" width="46" height="46" loading="lazy"><h3>HR Planer</h3></div><span class="status live"><i></i>Uživo</span></div>
+        <p>Planer koji koristim u svakodnevnom radu u HR-u. Služi za dnevne i nedeljne zadatke — kalendar obaveza, lista taskova i podsetnici na mejl. Nastao je iz sopstvene potrebe da se rokovi ne drže u glavi i po beleškama.</p>
+        <div class="tags"><span class="tag">JavaScript</span><span class="tag">Cloudflare Workers</span><span class="tag">Email podsetnici</span></div>
+        <a class="clink" href="https://hr-planer.bascarsija-recenzije.workers.dev/" target="_blank" rel="noopener"><span>Otvori aplikaciju</span><em>→</em></a>
+      </article>
+
+      <article class="card rv tilt">
+        <span class="sheen"></span>
+        <div class="ctop"><div class="tl"><img class="plogo" src="data:image/webp;base64,UklGRiwGAABXRUJQVlA4ICAGAAAwIQCdASqAAIAAPjEWikMiISEVSwyQIAMEsYBrFw4XAPZ3sT9041mwNhH6Y3mA6B3oAf1X/AdYB6AHlx+yngHP9V7Pv6ryqXsBnHfpx97/Kf8qtQv/bPyi4Hfkn9L/zW8w80X/T8a1QA/L3++9k3+K/7n+C88X5n/df997g/8q/p3+8/t/+B/8PeJ/cD2Vf1cIO02vY23G7yfZUqhXsBgGrmLGyOxaFXGdyIZOFQYaUr+pdUtPHU4IYX2TIjSrKfA6tc/UEwETrXTEBt5aGRd3WAHoQkT4X0Ui5vnPI2lIc42BP82K2/oj/H15ooq1NupAiaW6ECxje629V5JivGPQQXathOpSCxn16PXx23OTr2KAAP78+VVntupD/52D8Ifj14Nug44AACuxtfVA2znj9izWQATSq3I5pfH8ZNlPTR2nrU24oePjjNBAP/jtk7EOGNB0c7DvT8sdjLH79etPXRhHAikJbyRiVb/txiAFLR6NwXrJnI2vMhMLtcAoihCMqdWyjvE2vHduwTDwzw+1iDGJi3I1hwaZRP9kxy5FXsTLfEjHdRAkhbkgyT5tVd/g7VriP/cZoAXnNRivDKAkgFPB74HGzwZtU/ruoS4o0vQejeouPKkMbk1WQPxHt91KBHNnn4cxjbnDKJhpMthl76W733XH1v57Cix1fiNBy4Jyimleil/0+SZWESmTRzNrk0gQBAg6Q/w5oviie/nVz334oJ28Mam03qN6UvBfJzTmZxP+ivE0RaNKJ+JRw+yfy8+DEJbGoizqn/6Y+5vJHXC4x0z+VdE1lpAc//5WoDQp//jGF5GXbCv4E72is/o5z1UvXr4hJj7wyDjfPjN0igSycBpVzJb1LBteg2dWgN+o0R1LYNl43JqekTq238CbkvfPtA+3Sj4iOfuD/1lW33o45htah9E12Zf/UR//7l4HyGGf/9OaqJY5ms6/33EA8Hu/0xEdTZeTbpxf+h313eSHEHG6X91pvRoHV+Hfg4somGf+kaeXjy+O1MZeqaYhxwKT+gTldaYUd+HJcl/4fctGYDlNCFK6fP+Qf9dzmrjjDJP69Lg0hfPjCsqDtKD1Ybl1rWd1lNBP98ajEXv0cKHNx5cBgjelZdFZvf4ZAIaOyFUO8ndBgzYQkeXvfw0rhCoqEjB5DUD0JRj5zA1aNIo+cXYfF3AcjpSwKC/FEBuAWLrpMDoNYOdB0bxv5BrVoeUZ5Vx6B7Qftkp3FYIo8XrA1+Ottf56jNzi/Uf0+ixIB94Wb05kP0T+OBNXVd59AjJy0jyUf12OsOPmrTq/8vyoE/NB8CbZHwt0mQHpiAHpdn6/PMQ+i3FfXu8I2pJO+x+Qv1QdriZQThJXOsqWIKOlgAog+Wz3XdeZZMySrq4x2pwhaxmPVzgCAL8EWtJM0i8gacYgiiKUMNXfm3ZNh0VMGS7be4RMrb7mv0RtgnY41bFTEvwa/OYxpkSLd75yD+a+bJ1aDn7l+Xxzy+1tcig0MkKWQRkYq4lKR+TRiUh/fshtNc56GzI/+Q55Ah11rJocDQQvbnoCYJqz/I888waxzqf562jLLxPcwhoH/gBjFWHff9c5GNGc+K1Pq7R/QXJ70OjH5cfzi5gQPVck+vfnXPSuZ5bp+dAMvNJRXz2aPjHm1ffXSocWj/RgYWfhSXtdBP1rR9/N+ED9oP1Ru+bcw3Z9JaQUGx4b1edu6rPngq/047e19Utnd/c5PavozeLaTAQ7faDypw3YV27h9yOFXz+UfuvAeLnrvv/2dKGjuY/4aveuaLZlMOrAgMA0qKXIl7OGWmW8sQ5A+B1g2zl+2RPLUEBF9eOlnShZ5zC+lCPrcJPzXctqi+Rh6EJCtMBC1B1goQtDRCQxmoA9EPXLXIadJ7QRuw8wEPszHwo3xjPFvxfRo1XVU4sczQnf4nM//1MnQpBGlyv+IhZXv5Q2zuIu/IxghPEB6SeTydwnUKyZqIf/jz0+vqx8NCc3Wb9vKXjgVdVUs4//olQEE//Ps3hJCiYZgtGMcmbfl6qUJ96luPxI94eABQw5fGe7oOLB4rsBIvdJ3RVPoG4MupXZgk5LOWTyAAAAAAAAAA==" alt="Logo Baščaršija Narudžbe" width="46" height="46" loading="lazy"><h3>Baščaršija Narudžbe</h3></div><span class="status priv">Interno</span></div>
+        <p>Alat kojim osoblje unosi narudžbe i prati njihov status tokom smene, umesto papira i dogovora u hodu.</p>
+        <div class="tags"><span class="tag">HTML</span><span class="tag">JavaScript</span></div>
+        <p class="note">Interni alat — prikaz na zahtev.</p>
+      </article>
+      <article class="card feature rv tilt">
+        <span class="sheen"></span>
+        <div class="ctop"><div class="tl"><img class="plogo" src="data:image/webp;base64,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" alt="Logo Baščaršija" width="46" height="46" loading="lazy"><h3>HR-APP</h3></div><span class="status priv">Interno</span></div>
+        <p>Kompletna kadrovska evidencija za firmu u kojoj radim kao HR. Sistem vodi preko 120 zaposlenih na jednom mestu — lične podatke, ugovore, radno vreme, odsustva i plate — i zamenio je rad po tabelama i fasciklama u kojem je svaka provera značila ručno traženje.</p>
+        <p>Srce aplikacije su automatska upozorenja. Sistem prati rokove isteka radnih dozvola, viza i ugovora i javlja unapred, pa nijedan dokument ne istekne nezapaženo. Kod stranih radnika propušten rok znači prekid rada i novu proceduru od nule, i upravo je to bio razlog zbog kojeg sam aplikaciju i napravio.</p>
+        <ul class="feats">
+          <li>Evidencija preko 120 zaposlenih na jednom mestu</li>
+          <li>Upozorenja za istek viza, radnih dozvola i ugovora</li>
+          <li>Ugovori, radno vreme, odsustva i plate</li>
+          <li>Pregledi i izveštaji za menadžment</li>
+        </ul>
+        <div class="tags"><span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Automatska upozorenja</span><span class="tag">Evidencija</span></div>
+        <p class="note">Interni sistem sa podacima o zaposlenima — prikaz na zahtev.</p>
       </article>
 
 
+      <article class="card feature rv tilt">
+        <span class="sheen"></span>
+        <div class="ctop"><h3>MyHero</h3><span class="status dev">U razvoju</span></div>
+        <p>SaaS platforma za personalne trenere. Trener vodi klijente, planove treninga i ishrane na jednom mestu, a klijent kroz svoj nalog prati plan, beleži napredak i dopisuje se sa trenerom. Radi u pregledaču i instalira se na telefon kao aplikacija.</p>
+        <ul class="feats">
+          <li>Planovi treninga sa video demonstracijama vežbi</li>
+          <li>Planovi ishrane sa automatskim računanjem makronutrijenata</li>
+          <li>Praćenje napretka — mere, grafikon težine, galerija</li>
+          <li>Biblioteka od oko 148 vežbi uz dodavanje svojih</li>
+          <li>Poruke sa klijentima i izvoz plana u PDF</li>
+          <li>Pretplate: Starter, Pro i Studio, sa probnim periodom</li>
+        </ul>
+        <div class="tags"><span class="tag">React</span><span class="tag">Vite</span><span class="tag">Supabase</span><span class="tag">PWA</span><span class="tag">Vercel</span></div>
+        <p class="note">Aktivno razvijam ovu platformu — živi prikaz zakazujem na zahtev.</p>
+      </article>
 
     </div>
   </div>
 </section>
 
-<section id="omeni">
+<section id="omeni" class="sand">
   <div class="wrap">
-    <h2 class="sec-title rv">cat whoami.txt <em>&mdash; 3 pasusa</em></h2>
-    <div class="rule"></div>
-    <div class="cols">
-      <div class="box rv">
-        <p>Web developer sa fokusom na alate koji rešavaju konkretan operativni problem. Većina mojih projekata nastala je iz stvarne potrebe firme: neko je trošio sate na papir i tabele, pa smo to zamenili aplikacijom.</p>
-        <p>Radim celu putanju — od razgovora sa ljudima koji će alat koristiti, preko dizajna i implementacije, do postavljanja u produkciju i održavanja. Najviše mi je stalo do toga da interfejs bude razumljiv nekome ko nema vremena da uči kako se koristi.</p>
-        <p>Trenutno gradim skup internih aplikacija za ugostiteljski biznis i sistem za vođenje evidencije zaposlenih.</p>
+    <div class="about-cols">
+      <div>
+        <div class="head rv">
+          <p class="eyebrow">O meni</p>
+          <h2>Kod koji rešava konkretan problem</h2>
+        </div>
+        <div class="about rv">
+          <p>Programiranjem se bavim šest godina. Većina mojih projekata nastala je iz stvarne potrebe: neko je trošio sate na tabele i papir, pa smo to zamenili aplikacijom. Zato mi je najvažnije da interfejs razume neko ko nema vremena da uči kako se koristi.</p>
+          <p>Najviše me zanima optimizacija poslovnih procesa — da se posao koji je trajao sate svede na nekoliko klikova, a da se ono što se radilo ručno radi samo. Radim celu putanju — razgovor sa ljudima koji će alat koristiti, dizajn, implementacija, postavljanje u produkciju i održavanje posle toga. Trenutno razvijam MyHero, SaaS platformu za personalne trenere, i skup internih sistema za ugostiteljsku grupu u kojoj radim.</p>
+        </div>
       </div>
-      <div class="box rv">
-        <ul class="kv">
-          <li><span>lokacija</span><span class="cy">Maribor, SI</span></li>
-          <li><span>fokus</span><span>interni alati</span></li>
-          <li><span>jezici</span><span>SR / SI / EN</span></li>
-          <li><span>dostupnost</span><span class="gr">otvoren za projekte</span></li>
-        </ul>
-      </div>
+      <dl class="facts rv">
+        <div class="fact"><span>Lokacija</span><b>Maribor, Slovenija</b></div>
+        <div class="fact"><span>Iskustvo</span><b>6 godina</b></div>
+        <div class="fact"><span>Fokus</span><b>Web i poslovne aplikacije</b></div>
+        <div class="fact"><span>Jezici</span><b>Srpski, slovenački, engleski</b></div>
+        <div class="fact"><span>Obrazovanje</span><b>Računarstvo i informatika,<br>Academia Maribor</b></div>
+        <div class="fact"><span>Dostupnost</span><b>Otvoren za projekte</b></div>
+      </dl>
     </div>
   </div>
 </section>
 
 <section id="stack">
   <div class="wrap">
-    <h2 class="sec-title rv">tree ~/stack <em>&mdash; 4 grane</em></h2>
-    <div class="rule"></div>
-<pre class="tree rv"><b>stack/</b>
-├── <b>frontend/</b>
-│   ├── html-css        <i># semantika, responsive</i>
-│   ├── javascript      <i># DOM, async, fetch</i>
-│   └── typescript      <i># tipovi, veći projekti</i>
-├── <b>aplikacije/</b>
-│   ├── interni-alati   <i># evidencije, izveštaji</i>
-│   ├── prijava         <i># pristup i uloge</i>
-│   └── forme           <i># validacija, unos</i>
-├── <b>deploy/</b>
-│   ├── cloudflare      <i># Pages, Workers</i>
-│   ├── git-github      <i># verzionisanje</i>
-│   └── domeni-dns      <i># povezivanje</i>
-└── <b>pristup/</b>
-    ├── razgovor        <i># šta korisniku stvarno treba</i>
-    ├── prototip        <i># brzo, pa iteracija</i>
-    └── odrzavanje      <i># posle lansiranja</i></pre>
+    <div class="head rv"><p class="eyebrow">Tehnologije</p><h2>Čime radim</h2></div>
+    <div class="stack">
+      <div class="sgroup rv"><h3>Frontend</h3>
+        <div class="tags"><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">JavaScript</span><span class="tag">HTML</span><span class="tag">CSS</span></div></div>
+      <div class="sgroup rv"><h3>Backend i podaci</h3>
+        <div class="tags"><span class="tag">Supabase</span><span class="tag">PostgreSQL</span><span class="tag">REST API</span><span class="tag">Autentifikacija</span></div></div>
+      <div class="sgroup rv"><h3>Deploy</h3>
+        <div class="tags"><span class="tag">Vercel</span><span class="tag">Cloudflare Pages</span><span class="tag">Workers</span><span class="tag">Git</span><span class="tag">GitHub</span></div></div>
+      <div class="sgroup rv"><h3>Pristup radu</h3>
+        <div class="tags"><span class="tag">Optimizacija procesa</span><span class="tag">Razgovor sa korisnikom</span><span class="tag">Brz prototip</span><span class="tag">Iteracija</span><span class="tag">Održavanje</span></div></div>
+    </div>
   </div>
 </section>
 
 <section id="kontakt" class="contact">
-  <div class="wrap">
-    <h2 class="sec-title rv">./kontakt.sh <em>&mdash; pokreni</em></h2>
-    <div class="rule"></div>
-    <div class="box rv">
-      <p class="dim" style="font-size:13px;margin-bottom:14px">&gt; imaš projekat? reci šta treba da radi — odgovaram u roku od dana.</p>
-      <p class="mail"><span class="gr">$</span> <a href="mailto:tvoj@email.com">tvoj@email.com</a></p>
-      <div class="links">
-        <a href="https://github.com/MladenovicMarko" target="_blank" rel="noopener">github</a>
-        <a href="https://www.linkedin.com/in/marko-mladenovic-ba54a3339/" target="_blank" rel="noopener">linkedin</a>
-        <button class="linkbtn" id="phone" data-tel="+386 69 667 830">telefon</button>
-      </div>
+  <div class="wrap narrow rv">
+    <p class="eyebrow" style="color:var(--glow)">Kontakt</p>
+    <h2 style="margin-top:12px">Imate projekat na umu?</h2>
+    <p class="lede">Recite mi šta aplikacija treba da radi i javljam se u roku od dana.</p>
+    <a class="big" href="mailto:marko@markomladenovic.si">marko@markomladenovic.si</a>
+    <div class="cways">
+      <a class="way" href="tel:+38669667830"><b>+386 69 667 830</b><i>→</i></a>
+      <a class="way" href="https://www.linkedin.com/in/marko-mladenovic-ba54a3339/" target="_blank" rel="noopener"><b>LinkedIn</b><i>↗</i></a>
     </div>
   </div>
 </section>
 
 </main>
 
-<div class="status">
-  <div class="wrap">
-    <span><k>1-4</k>navigacija <k>/</k>fokus na terminal</span>
-    <span class="r" id="clock">marko mladenović — 2026</span>
-  </div>
-</div>
+<footer><div class="wrap foot">
+  <span>© 2026 Marko Mladenović</span><span>Maribor, Slovenija</span>
+</div></footer>
 
 <script>
-const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hero = document.getElementById('hero');
 
-/* ---- ASCII banner ---- */
-const art = [
-"███╗   ███╗ █████╗ ██████╗ ██╗  ██╗ ██████╗ ",
-"████╗ ████║██╔══██╗██╔══██╗██║ ██╔╝██╔═══██╗",
-"██╔████╔██║███████║██████╔╝█████╔╝ ██║   ██║",
-"██║╚██╔╝██║██╔══██║██╔══██╗██╔═██╗ ██║   ██║",
-"██║ ╚═╝ ██║██║  ██║██║  ██║██║  ██╗╚██████╔╝",
-"╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ "
-];
-const ascii = document.getElementById('ascii');
-ascii.innerHTML = art.map((l, i) =>
-  '<span style="animation-delay:' + (i * 0.07) + 's">' + l + '</span>').join('');
+/* ================= 3D TALAS (canvas, bez biblioteka) ================= */
+(function(){
+  const cv = document.getElementById('scene');
+  const ctx = cv.getContext('2d', { alpha: true });
+  const small = innerWidth < 760;
+  const COLS = small ? 26 : 46;
+  const ROWS = small ? 16 : 26;
+  const GAP  = small ? 30 : 26;
 
-/* ---- banner: uklopi tacno u sirinu ekrana ---- */
-function fitBanner(){
-  const cols = Math.max(...art.map(l => l.length));   // 44 znaka
-  const w = asciiWrap.clientWidth;
-  if (!w) return;
-  ascii.style.fontSize = Math.min(22, w / (cols * 0.6)) + 'px';
-}
+  let W = 0, H = 0, dpr = 1, t = 0, raf = 0, visible = true;
+  let px = 0, py = 0, tx = 0, ty = 0;
 
-/* ---- banner: hover = scramble + udarni talas ---- */
-const asciiWrap = document.getElementById('asciiWrap');
-const GLYPHS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ01#$%&*<>/\\|';
-let charging = false;
+  function size(){
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  size();
+  addEventListener('resize', size);
 
-function charge(){
-  if (charging || reduce) return;
-  charging = true;
-  asciiWrap.classList.add('charged');
+  // projekcija tacke iz 3D u 2D
+  function proj(x, y, z){
+    const d = 620, zz = z + d;
+    const s = d / Math.max(zz, 1);
+    return { x: W / 2 + x * s, y: H * 0.56 + y * s, s };
+  }
 
-  const wave = document.createElement('span');
-  wave.className = 'wave';
-  asciiWrap.appendChild(wave);
-  setTimeout(() => wave.remove(), 1000);
+  function frame(){
+    raf = requestAnimationFrame(frame);
+    if (!visible) return;
+    t += 0.011;
+    px += (tx - px) * 0.045;
+    py += (ty - py) * 0.045;
 
-  const lines = [...ascii.querySelectorAll('span')];
-  const original = lines.map(s => s.textContent);
-  let step = 0;
+    ctx.clearRect(0, 0, W, H);
 
-  const iv = setInterval(() => {
-    step++;
-    const noise = 0.6 - step * 0.075;
-    lines.forEach((s, i) => {
-      let out = '';
-      for (const ch of original[i]) {
-        out += (ch !== ' ' && Math.random() < noise)
-          ? GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
-          : ch;
+    const tilt = 0.92 + py * 0.22;          // nagib oko X ose
+    const yaw  = px * 0.3;                   // zaokret oko Y ose
+    const cT = Math.cos(tilt), sT = Math.sin(tilt);
+    const cY = Math.cos(yaw),  sY = Math.sin(yaw);
+
+    const pts = [];
+    for (let r = 0; r < ROWS; r++){
+      pts[r] = [];
+      for (let c = 0; c < COLS; c++){
+        let x = (c - (COLS - 1) / 2) * GAP;
+        let z = (r - (ROWS - 1) / 2) * GAP;
+        // talas
+        const d = Math.sqrt(x * x + z * z) * 0.012;
+        let y = Math.sin(d * 2.4 - t * 1.7) * 26 + Math.sin(x * 0.009 + t) * 9;
+        // rotacija Y pa X
+        const x1 = x * cY - z * sY, z1 = x * sY + z * cY;
+        const y2 = y * cT - z1 * sT, z2 = y * sT + z1 * cT;
+        const p = proj(x1, y2, z2);
+        p.depth = z2;
+        pts[r][c] = p;
       }
-      s.textContent = out;
-    });
-    if (step >= 8) {
-      clearInterval(iv);
-      lines.forEach((s, i) => s.textContent = original[i]);
-      setTimeout(() => { asciiWrap.classList.remove('charged'); charging = false; }, 850);
     }
-  }, 55);
-}
-fitBanner();
-window.addEventListener('resize', fitBanner);
-document.fonts && document.fonts.ready.then(fitBanner);
 
-asciiWrap.addEventListener('pointerenter', charge);
-asciiWrap.addEventListener('click', charge);
+    // linije po redovima i kolonama
+    ctx.lineWidth = 1;
+    for (let r = 0; r < ROWS; r++){
+      ctx.beginPath();
+      for (let c = 0; c < COLS; c++){
+        const p = pts[r][c];
+        c ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y);
+      }
+      const fade = 1 - r / ROWS;
+      ctx.strokeStyle = 'rgba(95,208,164,' + (0.05 + fade * 0.17).toFixed(3) + ')';
+      ctx.stroke();
+    }
+    for (let c = 0; c < COLS; c += 1){
+      ctx.beginPath();
+      for (let r = 0; r < ROWS; r++){
+        const p = pts[r][c];
+        r ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y);
+      }
+      ctx.strokeStyle = 'rgba(120,180,165,0.07)';
+      ctx.stroke();
+    }
 
-/* ---- terminal ---- */
-const log = document.getElementById('log');
-const form = document.getElementById('form');
-const cmd = document.getElementById('cmd');
-
-function print(html, cls){
-  const p = document.createElement('p');
-  if (cls) p.className = cls;
-  p.innerHTML = html;
-  log.appendChild(p);
-  log.scrollTop = log.scrollHeight;
-  return p;
-}
-
-const boot = [
-  '<span class="dim">$</span> whoami',
-  'marko mladenović — web developer, maribor',
-  '<span class="dim">$</span> ls ~/projekti | wc -l',
-  '5 <span class="dim">(3 u produkciji)</span>',
-  '<span class="dim">$</span> systemctl status portfolio',
-  '<span class="gr">●</span> aktivan — prima nove projekte',
-  '',
-  '<span class="dim">kucaj</span> <span class="am">help</span> <span class="dim">za listu komandi, ili samo skroluj.</span>'
-];
-
-let bi = 0;
-function bootLine(){
-  if (bi >= boot.length) return;
-  print(boot[bi++]);
-  setTimeout(bootLine, 240);
-}
-if (reduce) boot.forEach(l => print(l));
-else setTimeout(bootLine, 420);
-
-const targets = {
-  projekti: '#projekti', ls: '#projekti', projects: '#projekti',
-  omeni: '#omeni', whoami: '#omeni', about: '#omeni',
-  stack: '#stack', tree: '#stack',
-  kontakt: '#kontakt', contact: '#kontakt'
-};
-const apps = {
-  myhero: 'https://my-hero-lake.vercel.app',
-  jezici: 'https://bascarsija-jezici.pages.dev/',
-  recenzije: 'https://bascarsija-recenzije.bascarsija-recenzije.workers.dev/'
-};
-
-function run(input){
-  const raw = input.trim();
-  if (!raw) return;
-  print('<span class="gr">marko@portfolio:~$</span> ' + raw.replace(/</g, '&lt;'));
-  const [c, ...rest] = raw.toLowerCase().split(/\s+/);
-  const arg = rest.join(' ');
-
-  if (c === 'help') {
-    print('dostupne komande:');
-    print('  <span class="am">ls</span>            lista projekata');
-    print('  <span class="am">whoami</span>        ko sam i šta radim');
-    print('  <span class="am">stack</span>         tehnologije');
-    print('  <span class="am">contact</span>       kontakt podaci');
-    print('  <span class="am">open</span> &lt;app&gt;    otvori: myhero | jezici | recenzije');
-    print('  <span class="am">clear</span>         očisti ekran');
-    return;
+    // svetle tacke na grebenima
+    for (let r = 0; r < ROWS; r += 2){
+      for (let c = 0; c < COLS; c += 2){
+        const p = pts[r][c];
+        if (p.s < 0.75) continue;
+        ctx.fillStyle = 'rgba(159,232,205,' + ((p.s - 0.75) * 0.5).toFixed(3) + ')';
+        ctx.fillRect(p.x - 1, p.y - 1, 2, 2);
+      }
+    }
   }
-  if (c === 'clear') { log.innerHTML = ''; return; }
-  if (c === 'open') {
-    if (apps[arg]) { print('otvaram ' + arg + ' u novom tabu...', 'ok'); window.open(apps[arg], '_blank', 'noopener'); }
-    else print('<span class="rd">nema aplikacije:</span> ' + (arg || '(prazno)') + ' — probaj: myhero, jezici, recenzije');
-    return;
+
+  if (reduce){
+    // staticna slika, bez animacije
+    size(); frame(); cancelAnimationFrame(raf);
+  } else {
+    frame();
+    new IntersectionObserver(e => { visible = e[0].isIntersecting; }, { threshold: 0 }).observe(cv);
+    addEventListener('pointermove', ev => {
+      tx = (ev.clientX / innerWidth - 0.5) * 2;
+      ty = (ev.clientY / innerHeight - 0.5) * 2;
+    }, { passive: true });
+    addEventListener('scroll', () => {
+      ty = Math.min(scrollY / innerHeight, 1) * 1.2;
+    }, { passive: true });
   }
-  if (c === 'sudo') { print('<span class="rd">marko nije u sudoers fajlu. incident je prijavljen.</span>'); return; }
-  if (c === 'exit') { print('ne možeš da izađeš. skroluj dalje.'); return; }
-  if (targets[c]) {
-    print('idem na ' + c + '...', 'ok');
-    document.querySelector(targets[c]).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
-    return;
-  }
-  print('<span class="rd">komanda nije pronađena:</span> ' + c + ' — kucaj <span class="am">help</span>');
-}
+})();
 
-form.addEventListener('submit', e => { e.preventDefault(); run(cmd.value); cmd.value = ''; });
-document.getElementById('chips').addEventListener('click', e => {
-  const b = e.target.closest('.chip');
-  if (!b) return;
-  run(b.dataset.cmd);
-  cmd.focus();
-});
+/* ================= hero ulaz ================= */
+requestAnimationFrame(() => setTimeout(() => hero.classList.add('go'), 60));
 
-/* ---- telefon: otkrij + kopiraj ---- */
-const phone = document.getElementById('phone');
-const flash = document.createElement('span');
-flash.className = 'copied';
-flash.textContent = '[kopirano]';
-phone.after(flash);
+/* ================= header ================= */
+const hdr = document.getElementById('hdr');
+const prog = document.getElementById('prog');
+addEventListener('scroll', () => {
+  hdr.classList.toggle('solid', scrollY > 60);
+  const h = document.documentElement.scrollHeight - innerHeight;
+  prog.style.width = (h > 0 ? scrollY / h * 100 : 0) + '%';
+}, { passive: true });
 
-function copyText(t){
-  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(t);
-  return new Promise(res => {
-    const ta = document.createElement('textarea');
-    ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); } catch (e) {}
-    ta.remove(); res();
+/* ================= marquee ================= */
+(function(){
+  const track = document.getElementById('track');
+  if (reduce) return;
+  let x = 0, half = 0, vel = 0, last = scrollY;
+  const measure = () => half = track.scrollWidth / 2;
+  measure(); addEventListener('resize', measure);
+  (function loop(){
+    vel += ((scrollY - last) * 0.4 - vel) * 0.1; last = scrollY;
+    x -= 0.45 + Math.min(Math.abs(vel) * 0.3, 10);
+    if (half && x <= -half) x += half;
+    track.style.transform = 'translateX(' + x + 'px)';
+    requestAnimationFrame(loop);
+  })();
+})();
+
+/* ================= 3D nagib kartica ================= */
+if (matchMedia('(hover:hover) and (pointer:fine)').matches && !reduce){
+  document.querySelectorAll('.tilt').forEach(card => {
+    card.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect();
+      const mx = (e.clientX - r.left) / r.width;
+      const my = (e.clientY - r.top) / r.height;
+      card.style.setProperty('--mx', mx * 100 + '%');
+      card.style.setProperty('--my', my * 100 + '%');
+      card.style.transform =
+        'rotateY(' + ((mx - .5) * 5).toFixed(2) + 'deg) rotateX(' + ((.5 - my) * 5).toFixed(2) + 'deg) translateZ(6px)';
+    });
+    card.addEventListener('pointerleave', () => { card.style.transform = ''; });
   });
 }
 
-phone.addEventListener('click', () => {
-  const tel = phone.dataset.tel;
-  if (!phone.classList.contains('shown')) {
-    phone.classList.add('shown');
-    phone.innerHTML = '<a href="tel:' + tel.replace(/\s/g, '') + '">' + tel + '</a>';
-  }
-  copyText(tel).then(() => {
-    flash.classList.add('on');
-    setTimeout(() => flash.classList.remove('on'), 1600);
-  });
-});
-
-/* ---- keyboard shortcuts ---- */
-const keys = { '1': '#projekti', '2': '#omeni', '3': '#stack', '4': '#kontakt' };
-document.addEventListener('keydown', e => {
-  if (e.target.tagName === 'INPUT' || e.metaKey || e.ctrlKey || e.altKey) return;
-  if (keys[e.key]) { e.preventDefault(); document.querySelector(keys[e.key]).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); }
-  if (e.key === '/') { e.preventDefault(); cmd.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' }); cmd.focus(); }
-});
-
-/* ---- accordions ---- */
-document.querySelectorAll('.row').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const panel = document.getElementById(btn.getAttribute('aria-controls'));
-    const open = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!open));
-    panel.classList.toggle('open', !open);
-  });
-});
-
-/* ---- filters ---- */
-const projects = document.querySelectorAll('.proj');
-document.querySelectorAll('.filter').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter').forEach(b => b.setAttribute('aria-pressed', 'false'));
-    btn.setAttribute('aria-pressed', 'true');
-    const f = btn.dataset.filter;
-    projects.forEach(p => p.classList.toggle('hidden', f !== 'all' && p.dataset.status !== f));
-  });
-});
-
-/* ---- reveal ---- */
-const rv = document.querySelectorAll('.rv');
-if (reduce) rv.forEach(el => el.classList.add('in'));
-else {
-  const io = new IntersectionObserver(en => {
-    en.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } });
-  }, { threshold: 0.1 });
-  rv.forEach(el => io.observe(el));
+/* ================= reveal ================= */
+const items = document.querySelectorAll('.rv');
+if (reduce){
+  items.forEach(el => el.classList.add('in'));
+} else {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    });
+  }, { threshold: .12, rootMargin: '0px 0px -50px 0px' });
+  items.forEach((el, i) => { el.style.transitionDelay = (i % 3) * 70 + 'ms'; io.observe(el); });
 }
 </script>
 </body>
